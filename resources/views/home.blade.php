@@ -39,7 +39,7 @@
             </div>
 
             <!-- Nom de l'avatar -->
-            <div class="mt-4 text-center bg-yellow-300 py-1 px-3 rounded-md font-semibold text-gray-800">
+            <div contenteditable="true" class="mt-4 text-center bg-yellow-300 py-1 px-3 rounded-md font-semibold text-gray-800">
                 Avatar_1
             </div>
         </div>
