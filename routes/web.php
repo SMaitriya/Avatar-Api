@@ -9,6 +9,7 @@ use App\Http\Controllers\BibliothequeController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/bibliotheque', [BibliothequeController::class, 'index'])->name('bibliotheque');
 
 
 
