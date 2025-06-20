@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Navbar dynamique JS -->
+    <nav class="bg-white shadow-md p-4 mb-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="" alt="Logo" class="h-10">
+                <span class="text-xl font-semibold">Avatar API</span>
+            </div>
+            <div class="flex space-x-6 items-center" id="nav-auth"></div>
+        </div>
+    </nav>
+
+    <div class="flex justify-center items-center min-h-[60vh]">
+        <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+            <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">Connexion à votre compte</h1>
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block mb-1 font-medium">Pseudo</label>
+                    <input type="text" id="pseudo" required
+                        class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block mb-1 font-medium">Mot de passe</label>
+                    <input type="password" id="password" required
+                        class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition">Connexion</button>
+            </form>
+            <div id="result" class="mt-4 text-center"></div>
+        </div>
+    </div>
+
+    <script>
+        // Navbar dynamique
+        async function fetchUserPseudo(token) {
+            try {
+                const res = await fetch('/api/user', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.pseudo || 'Profil';
+                }
+            } catch (e) {}
+            return 'Profil';
+        }
+
+        async function updateNavbarAuth() {
+            const nav = document.getElementById('nav-auth');
+            const token = localStorage.getItem('api_token');
+            if (token) {
+                const pseudo = await fetchUserPseudo(token);
+                nav.innerHTML = `
+            <a href="/" class="text-gray-600 hover:text-blue-500">Accueil</a>
+            <a href="/bibliotheque" class="text-gray-600 hover:text-blue-500">Bibliothèque</a>
+            <a href="/profil" class="text-gray-600 hover:text-blue-500">${pseudo}</a>
+            <a href="#" class="text-gray-600 hover:text-blue-500" onclick="logoutApi();return false;">Déconnexion</a>
+        `;
+            } else {
+                nav.innerHTML = `
+            <a href="/" class="text-gray-600 hover:text-blue-500">Accueil</a>
+            <a href="/login" class="text-gray-600 hover:text-blue-500 font-bold underline">Connexion</a>
+            <a href="/register" class="text-gray-600 hover:text-blue-500">Inscription</a>
+        `;
+            }
+        }
+
+
+        function logoutApi() {
+            const token = localStorage.getItem('api_token');
+            if (token) {
+                fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                }).then(() => {
+                    localStorage.removeItem('api_token');
+                    updateNavbarAuth();
+                    window.location.href = '/';
+                });
+            }
+        }
+
+        updateNavbarAuth();
+
+        // Connexion formulaire
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pseudo = document.getElementById('pseudo').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    pseudo,
+                    password
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('api_token', data.token);
+                updateNavbarAuth();
+                // Redirection après succès
+                window.location.href = "/";
+            } else {
+                let err = data.message || "Erreur de connexion";
+                document.getElementById('result').innerHTML = '<span class="text-red-600">' + err + '</span>';
+            }
+        });
+    </script>
+</body>
+
+</html>
