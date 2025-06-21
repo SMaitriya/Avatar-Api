@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -59,5 +58,31 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Déconnecté avec succès'
         ]);
+    }
+
+    public function user(Request $request)
+    {
+        $user = $this->getAuthenticatedUser($request);
+        return $user ?: response()->json(['message' => 'Unauthenticated'], 401);
+    }
+
+    protected function getAuthenticatedUser(Request $request)
+    {
+        $token = $this->getTokenFromRequest($request);
+        if (!$token) {
+            return null;
+        }
+
+        $user = \Laravel\Sanctum\PersonalAccessToken::findToken($token)->tokenable;
+        return $user ? ['id' => $user->id, 'pseudo' => $user->pseudo, 'is_admin' => (bool)$user->is_admin] : null;
+    }
+
+    private function getTokenFromRequest($request)
+    {
+        $header = $request->header('Authorization');
+        if ($header && preg_match('/Bearer\s+(\S+)/', $header, $matches)) {
+            return $matches[1];
+        }
+        return $request->session()->get('api_token');
     }
 }

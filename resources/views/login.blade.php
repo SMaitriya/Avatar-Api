@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Connexion</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -15,16 +17,22 @@
     <nav class="bg-white shadow-md p-4 mb-8">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <img src="" alt="Logo" class="h-10">
-                <span class="text-xl font-semibold">Avatar API</span>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> <!-- plus grand -->
+                <span class="text-4xl font-semibold tracking-wider" style="font-family: 'Bangers', cursive;">
+                    <span style="color:#FF9800;">Avatar</span>
+                    <span style="color:#00AFF5;">API</span>
+                </span>
             </div>
+
             <div class="flex space-x-6 items-center" id="nav-auth"></div>
         </div>
     </nav>
 
     <div class="flex justify-center items-center min-h-[60vh]">
         <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-            <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">Connexion à votre compte</h1>
+            <h1 class="text-2xl font-bold mb-6 text-center" style="color:#00AFF5;">
+                Connexion à votre compte
+            </h1>
             <form id="loginForm" class="space-y-5">
                 <div>
                     <label class="block mb-1 font-medium">Pseudo</label>
@@ -37,7 +45,10 @@
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none">
                 </div>
                 <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition">Connexion</button>
+                    class="text-white w-full py-2 rounded-lg hover:bg-orange-600 transition duration-200 font-semibold"
+                    style="background-color: #FF9800;">
+                    Connexion
+                </button>
             </form>
             <div id="result" class="mt-4 text-center"></div>
         </div>
