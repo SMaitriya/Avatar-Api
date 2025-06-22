@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Avatar;
 
 class BibliothequeController extends Controller
 {
@@ -10,4 +11,5 @@ class BibliothequeController extends Controller
     {
         return view('bibliotheque');
     }
+
 }
