@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('avatars', function (Blueprint $table) {
 
-        $table->id('id_avatar'); 
+        $table->id('id_avatar');
         $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
         $table->string('name', 50);
         $table->string('nose_size', 50);
