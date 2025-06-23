@@ -2594,8 +2594,7 @@ class SvgElementsSeeder extends Seeder
     </g>
   </g>
 </svg>'],
-            ['element_type' => 'yeux', 'element_name' => 'yeux_3', 'svg_content' => '<?xml version="1.0" encoding="UTF-8"?>
-<svg id="CalqueSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            ['element_type' => 'yeux', 'element_name' => 'yeux_3', 'svg_content' => '<svg id="CalqueSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
     <style>
       .cls-1 {
@@ -2626,7 +2625,7 @@ class SvgElementsSeeder extends Seeder
 </svg>'],
 
             // Barbes
-            ['element_type' => 'barbe', 'element_name' => 'barbe_1', 'svg_content' => '<?xml version="1.0" encoding="UTF-8"?>
+            ['element_type' => 'barbe', 'element_name' => 'barbe_1', 'svg_content' => '
 <svg id="CalqueSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
     <style>
