@@ -1,88 +1,145 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col items-center justify-center min-h-screen bg-yellow-100 p-6">
+    <div class="container" style="max-width:900px;margin:auto;">
 
-        <h2 class="text-2xl font-bold mb-6">Crée ton Avatar</h2>
+        <h2 class="text-center mb-4">Créer mon avatar</h2>
 
-        <!-- Section principale avatar -->
-        <div class="flex items-center justify-center mb-8">
-            <!-- Bouton Sauvegarder (à brancher plus tard) -->
-            <button
-                class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black mr-4">
-                Sauvegarder
-            </button>
-
-            <!-- Zone d'affichage de l'avatar -->
-            <div class="bg-indigo-800 rounded-lg p-6">
-                <div class="relative w-64 h-64 flex items-center justify-center">
-                    <svg id="avatar-canvas" width="200" height="250" viewBox="0 0 200 250">
-                        <!-- Fond tête -->
-                        <ellipse cx="100" cy="125" rx="80" ry="100" fill="#FFDAB9" />
-                        <!-- Ajout dynamique SVG -->
-                        <g id="hair"></g>
-                        <g id="eyes"></g>
-                        <g id="mouth"></g>
-                    </svg>
-                </div>
-                <!-- Nom de l'avatar -->
-                <div contenteditable="true"
-                    class="mt-4 text-center bg-yellow-300 py-1 px-3 rounded-md font-semibold text-gray-800">
-                    Avatar_1
-                </div>
-            </div>
-
-            <!-- Bouton Télécharger (SVG) -->
-            <button id="download-btn" type="button"
-                class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">
-                Télécharger
-            </button>
-        </div>
-
-        <!-- Barre de modifications (boutons de sélection) -->
-        <div class="flex flex-col items-center gap-6">
-
-            <!-- Sélection couleur et partie -->
-            <div class="flex items-center gap-4">
-                <span class="font-semibold">Colorier&nbsp;:</span>
-                <select id="color-target" class="border rounded px-2 py-1">
-                    <option value="eyes">Yeux</option>
-                    <option value="hair">Cheveux</option>
-                </select>
-                <input id="color-picker" type="color" value="#4A90E2" class="ml-2 w-10 h-10 border rounded-full">
-                <span id="color-value" class="ml-2 font-mono text-gray-600">#4A90E2</span>
-            </div>
-
-            <!-- Choix des yeux -->
-            <div>
-                <span class="font-semibold mr-2">Yeux :</span>
-                <button class="bg-white border rounded px-3 py-1 shadow hover:bg-gray-200"
-                    onclick="setEyes('basic')">Basic</button>
-                <button class="bg-white border rounded px-3 py-1 shadow hover:bg-gray-200"
-                    onclick="setEyes('sleep')">Sleep</button>
-                <button class="bg-white border rounded px-3 py-1 shadow hover:bg-gray-200"
-                    onclick="setEyes('croix')">Croix</button>
-            </div>
-            <!-- Choix des cheveux -->
-            <div>
-                <span class="font-semibold mr-2">Cheveux :</span>
-                <button class="bg-white border rounded px-3 py-1 shadow hover:bg-gray-200"
-                    onclick="setHair('basic')">Court</button>
-                <!-- Ajoute d'autres styles ici -->
-            </div>
-            <!-- Choix de la bouche -->
-            <div>
-                <span class="font-semibold mr-2">Bouche :</span>
-                <button class="bg-white border rounded px-3 py-1 shadow hover:bg-gray-200"
-                    onclick="setMouth('smile')">Sourire</button>
-                <button class="bg-white border rounded px-3 py-1 shadow hover:bg-gray-200"
-                    onclick="setMouth('sad')">Triste</button>
+        <div style="display:flex;justify-content:center;">
+            <!-- Canvas SVG centré -->
+            <div
+                style="background:#f5f5f5;border-radius:24px;padding:32px;box-shadow:0 4px 12px rgba(0,0,0,0.07);display:inline-block;">
+                <svg id="avatar-canvas" width="280" height="280" viewBox="0 0 300 300"
+                    style="background:#fff;display:block;margin:auto;">
+                    <g id="background"></g>
+                    <g id="visage"></g>
+                    <g id="nez"></g>
+                    <g id="bouche"></g>
+                    <g id="yeux"></g>
+                    <g id="sourcils"></g>
+                    <g id="cheveux"></g>
+                    <g id="barbe"></g>
+                    <g id="lunettes"></g>
+                    <g id="accessoire"></g>
+                    <g id="haut"></g>
+                </svg>
             </div>
         </div>
+
+        <div class="d-flex justify-content-center mt-3 mb-4 gap-2">
+            <input type="color" id="color-picker" value="#4A90E2" style="height:40px;width:40px;border:none;">
+            <span id="color-value">#4A90E2</span>
+            <select id="color-target" class="form-select w-auto">
+                <option value="cheveux">Cheveux</option>
+                <option value="yeux">Yeux</option>
+                <option value="barbe">Barbe</option>
+                <option value="sourcils">Sourcils</option>
+                <option value="haut">T-shirt</option>
+                <option value="background">Fond</option>
+                <option value="visage">Peau</option>
+            </select>
+            <button id="download-btn" class="btn btn-primary ms-3">Télécharger mon avatar SVG</button>
+        </div>
+
+        <div id="choices-area" class="my-4" style="display:grid;gap:28px;"></div>
     </div>
+@endsection
 
+@section('scripts')
     <script>
-        // --------------- Téléchargement du SVG
+        // Liste des types
+        const elementTypes = [
+            'background', 'visage', 'nez', 'bouche', 'yeux', 'sourcils', 'cheveux', 'barbe', 'lunettes', 'accessoire',
+            'haut'
+        ];
+        let svgElements = [];
+
+        // Charger SVG depuis localStorage ou API
+        async function loadSvgElements() {
+            const cached = localStorage.getItem('svgElementsCache');
+            if (cached) {
+                svgElements = JSON.parse(cached);
+                return;
+            }
+            const res = await fetch('/api/svg-elements');
+            svgElements = await res.json();
+            localStorage.setItem('svgElementsCache', JSON.stringify(svgElements));
+        }
+
+        // Générer galerie claire et responsive
+        function renderChoices() {
+            const choicesArea = document.getElementById('choices-area');
+            choicesArea.innerHTML = '';
+            elementTypes.forEach(type => {
+                const group = svgElements.filter(e => e.element_type === type);
+                if (group.length === 0) return;
+                // Un bloc par type avec titre
+                const section = document.createElement('section');
+                section.style.background = "#fff";
+                section.style.borderRadius = "16px";
+                section.style.boxShadow = "0 1px 8px rgba(0,0,0,0.06)";
+                section.style.padding = "12px 18px 12px 18px";
+                section.innerHTML = `<h4 style="text-transform:capitalize;margin-bottom:8px;">${type}</h4>`;
+                const partDiv = document.createElement('div');
+                partDiv.className = 'avatar-parts';
+                partDiv.style.display = "flex";
+                partDiv.style.flexWrap = "wrap";
+                partDiv.style.gap = "12px";
+                group.forEach(item => {
+                    const choice = document.createElement('div');
+                    choice.className = 'avatar-choice';
+                    choice.setAttribute('data-type', item.element_type);
+                    choice.setAttribute('data-name', item.element_name);
+                    choice.setAttribute('data-svg', item.svg_content);
+                    choice.style.cursor = "pointer";
+                    choice.style.transition = "transform .13s";
+                    choice.style.padding = "3px";
+                    choice.style.borderRadius = "9px";
+                    choice.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
+                    choice.style.background = "#f9f9f9";
+                    choice.style.border = "2px solid transparent";
+                    choice.style.display = "flex";
+                    choice.style.alignItems = "center";
+                    choice.style.justifyContent = "center";
+                    choice.onmouseover = () => choice.style.border = "2px solid #4A90E2";
+                    choice.onmouseout = () => choice.style.border = "2px solid transparent";
+                    choice.onclick = () => setPart(item.element_type, item.element_name);
+                    // Petit SVG de prévisualisation
+                    let previewSvg = item.svg_content.replace('<svg ', `<svg width="48" height="48" `);
+                    choice.innerHTML = previewSvg;
+                    partDiv.appendChild(choice);
+                });
+                section.appendChild(partDiv);
+                choicesArea.appendChild(section);
+            });
+        }
+
+        // Fonction pour mettre à jour l'avatar complet
+        function setPart(part, name) {
+            const element = svgElements.find(e => e.element_type === part && e.element_name === name);
+            if (!element) return;
+            document.getElementById(part).innerHTML = element.svg_content;
+            if (document.getElementById('color-target').value === part) {
+                recolorElement(part);
+            }
+        }
+
+        // Colorisation dynamique
+        function recolorElement(part) {
+            const color = document.getElementById('color-picker').value;
+            document.querySelectorAll(`#${part} [fill], #${part} .colorizable`).forEach(el => {
+                el.setAttribute('fill', color);
+            });
+        }
+        document.getElementById('color-picker').addEventListener('input', function() {
+            document.getElementById('color-value').textContent = this.value;
+            recolorElement(document.getElementById('color-target').value);
+        });
+        document.getElementById('color-target').addEventListener('change', function() {
+            recolorElement(this.value);
+        });
+
+        // Téléchargement SVG
         document.getElementById('download-btn').addEventListener('click', function() {
             const svg = document.getElementById('avatar-canvas');
             const serializer = new XMLSerializer();
@@ -106,67 +163,14 @@
             setTimeout(() => URL.revokeObjectURL(url), 10);
         });
 
-        // -------------------- FONCTIONS DE CHARGEMENT ET COLORISATION
-
-        let currentEyes = 'basic';
-        let currentHair = 'basic';
-
-        async function setEyes(type) {
-            currentEyes = type;
-            const res = await fetch('/svg/templates/eyes/' + type + '.svg');
-            const svgText = await res.text();
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = svgText;
-            const g = tempDiv.querySelector('g');
-            document.getElementById('eyes').innerHTML = g ? g.outerHTML : svgText;
-            if (document.getElementById('color-target').value === 'eyes') recolorElement('eyes');
-        }
-        async function setMouth(type) {
-            const res = await fetch('/svg/templates/mouth/' + type + '.svg');
-            const svgText = await res.text();
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = svgText;
-            const g = tempDiv.querySelector('g');
-            document.getElementById('mouth').innerHTML = g ? g.outerHTML : svgText;
-        }
-        async function setHair(type) {
-            currentHair = type;
-            const res = await fetch('/svg/templates/hair/' + type + '.svg');
-            const svgText = await res.text();
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = svgText;
-            const g = tempDiv.querySelector('g');
-            document.getElementById('hair').innerHTML = g ? g.outerHTML : svgText;
-            if (document.getElementById('color-target').value === 'hair') recolorElement('hair');
-        }
-
-        // ---- Coloration dynamique
-        function recolorElement(part) {
-            const color = document.getElementById('color-picker').value;
-            if (part === 'eyes' && document.getElementById('eyes')) {
-                document.querySelectorAll('#eyes [fill="#4A90E2"], #eyes .iris').forEach(el => {
-                    el.setAttribute('fill', color);
-                });
-            }
-            if (part === 'hair' && document.getElementById('hair')) {
-                document.querySelectorAll('#hair .hair').forEach(el => {
-                    el.setAttribute('fill', color);
-                });
-            }
-        }
-        // Change la couleur en live
-        document.getElementById('color-picker').addEventListener('input', function() {
-            document.getElementById('color-value').textContent = this.value;
-            recolorElement(document.getElementById('color-target').value);
+        // Initialisation automatique
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSvgElements();
+            renderChoices();
+            elementTypes.forEach(type => {
+                const first = svgElements.find(e => e.element_type === type);
+                if (first) setPart(type, first.element_name);
+            });
         });
-        // Change la partie à colorier
-        document.getElementById('color-target').addEventListener('change', function() {
-            recolorElement(this.value);
-        });
-
-        // -------------- INIT
-        setEyes('basic');
-        setMouth('smile');
-        setHair('basic');
     </script>
 @endsection
