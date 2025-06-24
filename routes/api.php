@@ -4,7 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\SvgElementController;
 
+
+// ROUTE POUR LA RCUPERATION DES SVG ET MISE EN CACHE
+Route::get('/svg-elements', [SvgElementController::class, 'index']);
 
 
 Route::get('/user', function (Request $request) {
