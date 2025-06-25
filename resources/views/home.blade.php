@@ -190,11 +190,11 @@
                 svgElements = JSON.parse(cachedData);
                 return;
             }
-            
+
             // Si pas en cache, récupérer depuis l'API
             const res = await fetch('/api/svg-elements');
             svgElements = await res.json();
-            
+
             // Stocker en sessionStorage pour la session courante
             sessionStorage.setItem('svgElements', JSON.stringify(svgElements));
         }
@@ -288,10 +288,10 @@ async function sauvegarder() {
     const svg = document.getElementById('avatar-canvas');
     const serializer = new XMLSerializer();
     let avatarSvg = serializer.serializeToString(svg);
-    if (!avatarSvg.match(/^<svg[^>]+xmlns="http://www.w3.org/2000/svg"/)) {
+    if (!avatarSvg.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
         avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
     }
-    if (!avatarSvg.match(/^<svg[^>]+"http://www.w3.org/1999/xlink"/)) {
+    if (!avatarSvg.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
         avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
     }
     const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
@@ -301,7 +301,7 @@ async function sauvegarder() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': Bearer ${token},
+                'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
             },
             body: JSON.stringify({
@@ -312,7 +312,7 @@ async function sauvegarder() {
 
         if (!response.ok) {
             const err = await response.json();
-            throw new Error(${response.status} - ${err.message});
+            throw new Error(`${response.status} - ${err.message}`);
         }
 
         const data = await response.json();
@@ -321,6 +321,7 @@ async function sauvegarder() {
         alert('Erreur lors de la sauvegarde : ' + error.message);
     }
 }
+
 
 
 
