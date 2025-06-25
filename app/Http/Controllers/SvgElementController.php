@@ -12,7 +12,7 @@ class SvgElementController extends Controller
 {
     public function index(): JsonResponse
     {
-        $svgElements = Cache::remember('svg_elements_all', now()->addHours(6), function () {
+        $svgElements = Cache::remember('svg_elements_all', now()->addHours(1), function () {
             return DB::table('svg_elements')->get();
         });
         return response()->json($svgElements);
