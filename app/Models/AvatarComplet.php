@@ -7,8 +7,8 @@ use Illuminate\Support\Str;
 
 class AvatarComplet extends Model
 {
-    protected $table = 'avatar_complet'; // Spécifie le nom de la table
-    protected $fillable = ['avatar_id', 'user_id', 'avatar_svg'];
+    protected $table = 'avatar_complet'; 
+    protected $fillable = ['avatar_id', 'user_id', 'avatar_svg', 'avatar_name'];
 
     protected static function boot()
     {
