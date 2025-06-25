@@ -182,16 +182,10 @@
         };
 
         async function loadSvgElements() {
-            const cached = localStorage.getItem('svgElementsCache');
-            // Si les éléments SVG sont déjà en cache, on les utilise
-            if (cached) {
-                svgElements = JSON.parse(cached);
-                return;
-            }
-            const res = await fetch('/api/svg-elements');
-            svgElements = await res.json();
-            localStorage.setItem('svgElementsCache', JSON.stringify(svgElements));
-        }
+    // Le navigateur va automatiquement utiliser son cache HTTP
+    const res = await fetch('/api/svg-elements');
+    svgElements = await res.json();
+}
 
         // Fonction pour changer la couleur d'une partie
         function changePartColor(partName, color) {
