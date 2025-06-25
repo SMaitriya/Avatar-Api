@@ -7,9 +7,10 @@ use App\Models\Avatar;
 
 class BibliothequeController extends Controller
 {
-     public function index()
+       public function index() // Récupérer tous les avatars de l'utilisateur connecté sans doute utile pour la bibliothèque
     {
-        return view('bibliotheque');
+        $avatars = AvatarComplet::where('user_id', Auth::id())->get();
+        return response()->json($avatars);
     }
 
 }
