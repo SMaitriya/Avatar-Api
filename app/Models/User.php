@@ -49,8 +49,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function avatars()
+    public function avatarsComplets()
     {
-        return $this->hasMany(Avatar::class, 'id_user', 'id');
+        return $this->hasMany(AvatarComplet::class);
     }
 }
