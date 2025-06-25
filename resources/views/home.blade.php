@@ -285,7 +285,15 @@ async function sauvegarder() {
         return;
     }
 
-    const avatarSvg = document.getElementById('avatar-canvas').outerHTML;
+    const svg = document.getElementById('avatar-canvas');
+    const serializer = new XMLSerializer();
+    let avatarSvg = serializer.serializeToString(svg);
+    if (!avatarSvg.match(/^<svg[^>]+xmlns="http://www.w3.org/2000/svg"/)) {
+        avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    if (!avatarSvg.match(/^<svg[^>]+"http://www.w3.org/1999/xlink"/)) {
+        avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    }
     const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
 
     try {
@@ -293,7 +301,7 @@ async function sauvegarder() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': Bearer ${token},
                 'Accept': 'application/json',
             },
             body: JSON.stringify({
@@ -304,7 +312,7 @@ async function sauvegarder() {
 
         if (!response.ok) {
             const err = await response.json();
-            throw new Error(`${response.status} - ${err.message}`);
+            throw new Error(${response.status} - ${err.message});
         }
 
         const data = await response.json();
@@ -314,7 +322,6 @@ async function sauvegarder() {
     }
 }
 
-    
 
 
     </script>

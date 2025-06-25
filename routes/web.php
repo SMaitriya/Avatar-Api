@@ -9,7 +9,7 @@ use App\Http\Controllers\AuthController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Page bibliothèque
-Route::get('/bibliotheque', [BibliothequeController::class, 'index'])->name('bibliotheque');
+Route::get('/bibliotheque', [BibliothequeController::class, 'index'])->middleware('auth')->name('bibliotheque');
 
 // Page login
 Route::get('/login', function () {
@@ -25,3 +25,6 @@ Route::get('/register', function () {
 Route::get('/admin/api-keys', function () {
     return view('api-keys');
 })->name('api-keys.index');
+
+
+Route::get('/bibliotheque', [BibliothequeController::class, 'index']);
