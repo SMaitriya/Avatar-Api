@@ -190,11 +190,11 @@
                 svgElements = JSON.parse(cachedData);
                 return;
             }
-            
+
             // Si pas en cache, récupérer depuis l'API
             const res = await fetch('/api/svg-elements');
             svgElements = await res.json();
-            
+
             // Stocker en sessionStorage pour la session courante
             sessionStorage.setItem('svgElements', JSON.stringify(svgElements));
         }
@@ -285,7 +285,15 @@ async function sauvegarder() {
         return;
     }
 
-    const avatarSvg = document.getElementById('avatar-canvas').outerHTML;
+    const svg = document.getElementById('avatar-canvas');
+    const serializer = new XMLSerializer();
+    let avatarSvg = serializer.serializeToString(svg);
+    if (!avatarSvg.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+        avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    if (!avatarSvg.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+        avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    }
     const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
 
     try {
@@ -314,7 +322,7 @@ async function sauvegarder() {
     }
 }
 
-    
+
 
 
     </script>
