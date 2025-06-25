@@ -7,8 +7,8 @@
         <!-- Section principale avatar -->
         <div class="flex items-center justify-center mb-8">
             <!-- Bouton Sauvegarder (à brancher plus tard) -->
-            <button
-                class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black mr-4">
+            <button  onclick="sauvegarder()"
+                id="sauvegarder-avatar" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black mr-4">
                 Sauvegarder
             </button>
 
@@ -31,7 +31,7 @@
                     </svg>
                 </div>
                 <!-- Nom de l'avatar -->
-                <div contenteditable="true"
+                <div id="avatar-name" contenteditable="true"
                     class="mt-4 text-center bg-yellow-300 py-1 px-3 rounded-md font-semibold text-gray-800">
                     Avatar_1
                 </div>
@@ -274,5 +274,46 @@
             setPart('lunettes', 'lunettes_1');
             setPart('accessoire', 'collier');
         });
+
+
+async function sauvegarder() {
+    const token = localStorage.getItem('api_token');
+    if (!token) {
+        alert('Vous devez être connecté pour sauvegarder.');
+        return;
+    }
+
+    const avatarSvg = document.getElementById('avatar-canvas').outerHTML;
+    const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
+
+    try {
+        const response = await fetch('http://localhost:8000/api/avatar_complet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                avatar_svg: avatarSvg,
+                avatar_name: avatarName,
+            }),
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(`${response.status} - ${err.message}`);
+        }
+
+        const data = await response.json();
+        alert('Sauvegarde réussie !');
+    } catch (error) {
+        alert('Erreur lors de la sauvegarde : ' + error.message);
+    }
+}
+
+    
+
+
     </script>
 @endsection
