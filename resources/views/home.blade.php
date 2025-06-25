@@ -182,9 +182,27 @@
         };
 
         async function loadSvgElements() {
-    // Le navigateur va automatiquement utiliser son cache HTTP
+    console.log('🔍 Début loadSvgElements');
+    
+    // Vérifier d'abord si les données sont déjà en sessionStorage
+    const cachedData = sessionStorage.getItem('svgElements');
+    if (cachedData) {
+        console.log('✅ Données trouvées en cache, taille:', cachedData.length);
+        svgElements = JSON.parse(cachedData);
+        return;
+    }
+    
+    console.log('📡 Aucun cache trouvé, récupération depuis API...');
+    
+    // Si pas en cache, récupérer depuis l'API
     const res = await fetch('/api/svg-elements');
     svgElements = await res.json();
+    
+    console.log('📦 Données reçues de l\'API:', svgElements.length, 'éléments');
+    
+    // Stocker en sessionStorage pour la session courante
+    sessionStorage.setItem('svgElements', JSON.stringify(svgElements));
+    console.log('💾 Données stockées en sessionStorage');
 }
 
         // Fonction pour changer la couleur d'une partie

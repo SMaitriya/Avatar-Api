@@ -12,13 +12,8 @@ class SvgElementController extends Controller
 {
     public function index(): JsonResponse
     {
-        $svgElements = Cache::remember('svg_elements_all', now()->addHours(1), function () {
-            return DB::table('svg_elements')->get();
-        });
+        $svgElements = DB::table('svg_elements')->get();
 
-        return response()->json($svgElements)
-            ->header('Cache-Control', 'public, max-age=3600') // Cache 1 heure
-            ->header('Expires', now()->addHour()->toRfc7231String())
-            ->header('Last-Modified', now()->toRfc7231String());
+           return response()->json($svgElements);
     }
 }
