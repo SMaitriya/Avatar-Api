@@ -13,7 +13,7 @@
             </button>
 
             <!-- Zone d'affichage de l'avatar -->
-            <div class="bg-indigo-800 rounded-lg p-6">
+            <div class="bg-white rounded-lg p-6"> <!-- BLANC -->
                 <div class="relative w-64 h-64 flex items-center justify-center">
                     <!-- Zone SVG pour l'avatar -->
                     <svg id="avatar-canvas" width="200" height="200" viewBox="0 0 200 200">
@@ -65,7 +65,7 @@
                         <option value="visage">Visage</option>
                     </select>
                     <input type="color" onchange="changePartColor('visage', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur du visage">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur du visage">
                 </div>
 
                 <!-- Choix du nez -->
@@ -97,7 +97,7 @@
                         <option value="yeux_3">Yeux 3</option>
                     </select>
                     <input type="color" onchange="changePartColor('yeux', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur des yeux">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des yeux">
                 </div>
 
                 <!-- Choix des sourcils -->
@@ -109,7 +109,7 @@
                         <option value="sourcils_3">Sourcils 3</option>
                     </select>
                     <input type="color" onchange="changePartColor('sourcils', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur des sourcils">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des sourcils">
                 </div>
 
                 <!-- Choix des cheveux -->
@@ -120,7 +120,7 @@
                         <option value="cheveux_2">Cheveux 2</option>
                     </select>
                     <input type="color" onchange="changePartColor('cheveux', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur des cheveux">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des cheveux">
                 </div>
 
                 <!-- Choix de la barbe -->
@@ -131,7 +131,7 @@
                         <option value="barbe_2">Barbe 2</option>
                     </select>
                     <input type="color" onchange="changePartColor('barbe', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur de la barbe">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur de la barbe">
                 </div>
 
                 <!-- Choix des lunettes -->
@@ -142,7 +142,7 @@
                         <option value="lunettes_2">Lunettes 2</option>
                     </select>
                     <input type="color" onchange="changePartColor('lunettes', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur des lunettes">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des lunettes">
                 </div>
 
                 <!-- Choix des accessoires -->
@@ -161,7 +161,7 @@
                         <option value="haut">Haut</option>
                     </select>
                     <input type="color" onchange="changePartColor('haut', this.value)"
-                           class="w-full h-8 border rounded cursor-pointer" title="Couleur du haut">
+                        class="w-full h-8 border rounded cursor-pointer" title="Couleur du haut">
                 </div>
             </div>
         </div>
@@ -172,13 +172,15 @@
 
         // Configuration des sélecteurs CSS pour chaque partie
         const colorSelectors = {
-            'visage': ['path[fill="#e5cca3"]', 'fill'],
-            'lunettes': ['path[stroke*="#"], rect[stroke*="#"], circle[stroke*="#"]', 'stroke'], // Pour les contours
-            'sourcils': ['path', 'fill'],
-            'yeux': ['circle[fill*="#"], ellipse[fill*="#"]', 'fill'], // Iris des yeux
-            'haut': ['path', 'fill'],
-            'barbe': ['path', 'fill'],
-            'cheveux': ['g path[data-part="main"]', 'fill']
+            'visage': ['path[data-part="visage"]', 'fill'],
+            'lunettes': ['circle[data-part="lunettes_1"], path[data-part="lunettes_2"]', 'fill'],
+            'sourcils': ['path[data-part="sourcils_1"], path[data-part="sourcils_2"], path[data-part="sourcils_3"]',
+                'fill'
+            ],
+            'yeux': ['path[data-part="yeux_1"], path[data-part="yeux_2"], path[data-part="yeux_3"]', 'fill'],
+            'haut': ['path[data-part="haut"]', 'fill'],
+            'barbe': ['path[data-part="barbe_1"], path[data-part="barbe_2"], polygon[data-part="barbe_1"]', 'fill'],
+            'cheveux': ['path[data-part="cheveux_1"], path[data-part="cheveux_2"]', 'fill']
         };
 
         async function loadSvgElements() {
@@ -262,7 +264,7 @@
         // Fonctions pour changer les parties de l'avatar
         document.addEventListener('DOMContentLoaded', async () => {
             await loadSvgElements(); // Attend que les données soient chargées
-            // setPart('background', 'background_1');
+            setPart('background', 'background_1');
             setPart('haut', 'haut');
             setPart('visage', 'visage');
             setPart('nez', 'nez_1');
