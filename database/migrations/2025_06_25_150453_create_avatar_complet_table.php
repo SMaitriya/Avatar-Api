@@ -13,7 +13,7 @@ class CreateAvatarCompletTable extends Migration
             $table->uuid('avatar_id')->unique(); // UUID unique pour chaque avatar
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('avatar_name');
-            $table->text('avatar_svg'); 
+            $table->longtext('avatar_svg'); 
             $table->timestamps();
         });
     }

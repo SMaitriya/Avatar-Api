@@ -22,7 +22,7 @@ Route::get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/avatar_complet', [AvatarCompletController::class, 'store']);
-    Route::get('/bibliotheque', [BibliothequeController::class, 'index']);
+    Route::get('/bibliotheque', [BibliothequeController::class, 'recuperer']);
 });
 
 // Authentification
