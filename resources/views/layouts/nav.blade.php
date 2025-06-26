@@ -1,5 +1,5 @@
 
-<nav class="bg-white shadow-md p-4 mb-8">
+<nav class="bg-white shadow-md p-4">
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center space-x-4">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> <!-- plus grand -->

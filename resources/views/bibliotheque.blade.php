@@ -4,16 +4,22 @@
 <div class="container mx-auto py-8">
     <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Ma Bibliothèque d'Avatars</h1>
     
-    <div id="avatars-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div id="avatars-container" class="mb-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         
     </div>
 </div>
 
 
 <div class="fixed bottom-4 left-1/2 transform -translate-x-1/2 space-y-2 sm:space-y-0 sm:space-x-2 sm:flex">
-    <button onclick="handleView()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">Voir</button>
-    <button onclick="handleDownload()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">Télécharger</button>
-    <button onclick="handleDelete()" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">Supprimer</button>
+    <button onclick="handleView()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-8 rounded-full border-2 border-black ml-4 flex items-center gap-2">
+  Voir <img src="{{ asset('images/visualiser.svg') }}" alt="Voir" class="w-5 h-5">
+</button>
+
+    <button onclick="handleDownload()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4 flex items-center gap-2">
+        Télécharger<img src="{{ asset('images/telecharger.svg') }}" alt="Voir" class="w-8 h-8"></button>
+    <button onclick="handleDelete()" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4 flex items-center gap-2">
+        
+        Supprimer<img src="{{ asset('images/supprimer.svg') }}" alt="Voir" class="w-7 h-7"></button>
 </div>
 
 
@@ -21,7 +27,7 @@
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 max-w-sm">
         <div class="text-center">
-            <div id="modal-avatar" class="w-64 h-4064 mx-auto mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
+            <div id="modal-avatar" class="w-64 h-64 mx-auto mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
                 <div class="w-full h-full flex items-center justify-center">
                 </div>
             </div>
