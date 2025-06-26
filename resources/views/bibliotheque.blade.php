@@ -27,12 +27,12 @@
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 max-w-sm">
         <div class="text-center">
-            <div id="modal-avatar" class="w-64 h-64 mx-auto mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
+            <div id="modal-avatar" class=" pt-6 w-64 h-64 mx-auto mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
                 <div class="w-full h-full flex items-center justify-center">
                 </div>
             </div>
             <p id="modal-name" class="font-bold"></p>
-            <button onclick="closeModal()" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">Fermer</button>
+            <button onclick="closeModal()" class="mt-4  bg-gray-500 text-white px-4 py-2 rounded">Fermer</button>
         </div>
     </div>
 </div>
@@ -72,8 +72,8 @@ function displayAvatars() {
     container.innerHTML = avatars.map(avatar => `
         <div onclick="selectAvatar('${avatar.avatar_id}', this)" 
              class="bg-white rounded-lg shadow-md p-4 text-center cursor-pointer transition ring-offset-2">
-            <div class="w-32 h-32 mx-auto mb-3 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                <div class="w-full h-full flex items-center justify-center">
+            <div class="w-64 h-64 mx-auto bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                <div class="w-full h-full flex items-center justify-center pt-6">
                     ${avatar.avatar_svg}
                 </div>
             </div>

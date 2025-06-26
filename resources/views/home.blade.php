@@ -1,176 +1,297 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col items-center  min-h-screen bg-yellow-100 p-6">
-        <h2 class="text-2xl font-bold mb-6">Crée ton Avatar</h2>
+    <style>
+        body,
+        h2
+        {
+        font-family: 'Poppins', sans-serif;
+        }
 
+        .min-h-screen {
+            background-color: #f5e8c7;
+        }
+
+        button {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            border-radius: 0.5rem;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .cursor-pointer:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
+
+        .avatar-container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            /* Réduit de 1.5rem à 1rem */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #avatar-canvas {
+            background: none;
+            overflow: visible;
+        }
+
+        .option-card {
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .option-card:hover {
+            background: #e5e7eb;
+        }
+
+        input[type="color"] {
+            width: 40px !important;
+            height: 40px !important;
+            border: none;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+        }
+
+        .svg-option {
+            width: 120px !important;
+            height: 120px !important;
+            min-width: 120px !important;
+            min-height: 120px !important;
+        }
+
+        .options-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .options-container .flex-wrap {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding-left: 0;
+        }
+
+        .options-container .flex-wrap::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .options-container .flex-wrap::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+
+        .part-selector {
+            background: #e5e7eb;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 120%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .part-selector:hover {
+            background: #d1d5db;
+        }
+
+        .part-selector.active {
+            background: #00AFF5;
+            color: white;
+        }
+
+        .part-label {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.35rem;
+            color: #333;
+        }
+
+        #color-picker-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+
+        }
+
+        #color-value {
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+
+    <div class="flex flex-col items-center justify-center min-h-screen p-4"> <!-- Réduit de p-6 à p-4 -->
         <!-- Section principale avatar -->
-        <div class="flex items-center justify-center mb-8 ">
-            <!-- Bouton Sauvegarder (à brancher plus tard) -->
-            <button  onclick="sauvegarder()"
-                id="sauvegarder-avatar" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black mr-4">
+        <div class="flex items-center justify-center mb-6 gap-4"> <!-- Réduit mb-8 à mb-6 -->
+            <button onclick="sauvegarder()" id="sauvegarder-avatar"
+                class="bg-[#00AFF5] hover:bg-[#00BFFF] text-white font-semibold py-2 px-6 rounded-full border-2 border-black"
+                style="background-color: #00AFF5; opacity: 1;" aria-label="Sauvegarder l'avatar">
                 Sauvegarder
             </button>
 
-            <!-- Zone d'affichage de l'avatar -->
-            <div class="bg-white rounded-lg p-6"> <!-- BLANC -->
-                <div class="relative w-64 h-64 flex items-center justify-center">
-                    <!-- Zone SVG pour l'avatar -->
-                    <svg id="avatar-canvas" width="200" height="200" viewBox="0 0 200 200">
-                        <g id="background"></g>
-                        <g id="haut"></g>
-                        <g id="visage"></g>
-                        <g id="nez"></g>
-                        <g id="bouche"></g>
-                        <g id="yeux"></g>
-                        <g id="sourcils"></g>
-                        <g id="cheveux"></g>
-                        <g id="barbe"></g>
-                        <g id="accessoire"></g>
-                        <g id="lunettes"></g>
-                    </svg>
-                </div>
-                <!-- Nom de l'avatar -->
+            <div class="avatar-container relative" style="width: 250px; height: 280px;">
+                <svg id="avatar-canvas" width="300" height="300" viewBox="0 0 190 300"
+                    style="display: block; margin: auto;">
+
+                    <g id="background"></g>
+                    <g id="haut"></g>
+                    <g id="visage"></g>
+                    <g id="nez"></g>
+                    <g id="bouche"></g>
+                    <g id="yeux"></g>
+                    <g id="sourcils"></g>
+                    <g id="cheveux"></g>
+                    <g id="barbe"></g>
+                    <g id="accessoire"></g>
+                    <g id="lunettes"></g>
+                </svg>
                 <div id="avatar-name" contenteditable="true"
-                    class="mt-4 text-center bg-yellow-300 py-1 px-3 rounded-md font-semibold text-gray-800">
+                    class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center bg-yellow-300 py-1 px-3 rounded-md font-semibold text-gray-800"
+                    style="margin-bottom: -.5rem; min-width: 140px; max-width: 220px; width: max-content; margin-top: 0.5rem; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                    aria-label="Nom de l'avatar">
                     Avatar_1
                 </div>
             </div>
 
-            <!-- Bouton Télécharger (SVG) -->
             <button id="download-btn" type="button"
-                class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">
+                class="bg-[#FF9800] hover:bg-[#FFA726] text-white font-semibold py-2 px-6 rounded-full border-2 border-black"
+                style="background-color: #FF9800; opacity: 1;" aria-label="Télécharger l'avatar">
                 Télécharger
             </button>
         </div>
 
-        <!-- Barre de modifications (boutons de sélection) -->
-        <div class="flex flex-col items-center gap-6 max-w-4xl">
-            <!-- Sélection des éléments -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-                <!-- Choix du background -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Arrière-plan :</span>
-                    <select onchange="setPart('background', this.value)" class="border rounded px-2 py-1">
-                        <option value="background_1">Arrière-plan 1</option>
-                        <option value="background_2">Arrière-plan 2</option>
-                        <option value="background_3">Arrière-plan 3</option>
-                    </select>
+        <!-- Barre de modifications -->
+        <div class="w-full max-w-4xl bg-white p-4 rounded-lg shadow-lg"> <!-- Réduit p-6 à p-4 -->
+            <div class="flex gap-2 mb-4" id="part-selectors">
+                <!-- Visage -->
+                <button data-part="visage" class="part-selector">
+                    <svg id="visage-icon" width="100" height="100" viewBox="0 0 200 200">
+                        <g id="visage"></g>
+                    </svg>
+                    <span class="part-label">Visage</span>
+                </button>
+                <!-- Yeux -->
+                <button data-part="yeux" class="part-selector">
+                    <svg id="yeux-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="yeux"></g>
+                    </svg>
+                    <span class="part-label">Yeux</span>
+                </button>
+                <!-- Nez -->
+                <button data-part="nez" class="part-selector">
+                    <svg id="nez-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="nez"></g>
+                    </svg>
+                    <span class="part-label">Nez</span>
+                </button>
+                <!-- Bouche -->
+                <button data-part="bouche" class="part-selector">
+                    <svg id="bouche-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="bouche"></g>
+                    </svg>
+                    <span class="part-label">Bouche</span>
+                </button>
+                <!-- Sourcils -->
+                <button data-part="sourcils" class="part-selector">
+                    <svg id="sourcils-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="sourcils"></g>
+                    </svg>
+                    <span class="part-label">Sourcils</span>
+                </button>
+                <!-- Cheveux -->
+                <button data-part="cheveux" class="part-selector">
+                    <svg id="cheveux-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="cheveux"></g>
+                    </svg>
+                    <span class="part-label">Cheveux</span>
+                </button>
+                <!-- Barbe -->
+                <button data-part="barbe" class="part-selector">
+                    <svg id="barbe-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="barbe"></g>
+                    </svg>
+                    <span class="part-label">Barbe</span>
+                </button>
+                <!-- Lunettes -->
+                <button data-part="lunettes" class="part-selector">
+                    <svg id="lunettes-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="lunettes"></g>
+                    </svg>
+                    <span class="part-label">Lunettes</span>
+                </button>
+                <!-- Accessoire -->
+                <button data-part="accessoire" class="part-selector">
+                    <svg id="accessoire-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="accessoire"></g>
+                    </svg>
+                    <span class="part-label">Accessoire</span>
+                </button>
+                <!-- Background -->
+                <button data-part="background" class="part-selector">
+                    <svg id="background-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="background"></g>
+                    </svg>
+                    <span class="part-label">Arrière-plan</span>
+                </button>
+                <!-- Haut -->
+                <button data-part="haut" class="part-selector">
+                    <svg id="haut-icon" width="70" height="70" viewBox="0 0 200 200">
+                        <g id="haut"></g>
+                    </svg>
+                    <span class="part-label">Haut</span>
+                </button>
+            </div>
+            <div class="options-wrapper">
+                <div class="options-container">
+                    <div class="flex gap-2 flex-wrap" id="options-preview"></div>
                 </div>
 
-                <!-- Choix du visage -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Visage :</span>
-                    <select onchange="setPart('visage', this.value)" class="border rounded px-2 py-1">
-                        <option value="visage">Visage</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('visage', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur du visage">
-                </div>
-
-                <!-- Choix du nez -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Nez :</span>
-                    <select onchange="setPart('nez', this.value)" class="border rounded px-2 py-1">
-                        <option value="nez_1">Nez 1</option>
-                        <option value="nez_2">Nez 2</option>
-                        <option value="nez_3">Nez 3</option>
-                    </select>
-                </div>
-
-                <!-- Choix de la bouche -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Bouche :</span>
-                    <select onchange="setPart('bouche', this.value)" class="border rounded px-2 py-1">
-                        <option value="bouche_1">Bouche 1</option>
-                        <option value="bouche_2">Bouche 2</option>
-                        <option value="bouche_3">Bouche 3</option>
-                    </select>
-                </div>
-
-                <!-- Choix des yeux -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Yeux :</span>
-                    <select onchange="setPart('yeux', this.value)" class="border rounded px-2 py-1">
-                        <option value="yeux_1">Yeux 1</option>
-                        <option value="yeux_2">Yeux 2</option>
-                        <option value="yeux_3">Yeux 3</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('yeux', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des yeux">
-                </div>
-
-                <!-- Choix des sourcils -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Sourcils :</span>
-                    <select onchange="setPart('sourcils', this.value)" class="border rounded px-2 py-1">
-                        <option value="sourcils_1">Sourcils 1</option>
-                        <option value="sourcils_2">Sourcils 2</option>
-                        <option value="sourcils_3">Sourcils 3</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('sourcils', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des sourcils">
-                </div>
-
-                <!-- Choix des cheveux -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Cheveux :</span>
-                    <select onchange="setPart('cheveux', this.value)" class="border rounded px-2 py-1">
-                        <option value="cheveux_1">Cheveux 1</option>
-                        <option value="cheveux_2">Cheveux 2</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('cheveux', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des cheveux">
-                </div>
-
-                <!-- Choix de la barbe -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Barbe :</span>
-                    <select onchange="setPart('barbe', this.value)" class="border rounded px-2 py-1">
-                        <option value="barbe_1">Barbe 1</option>
-                        <option value="barbe_2">Barbe 2</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('barbe', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur de la barbe">
-                </div>
-
-                <!-- Choix des lunettes -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Lunettes :</span>
-                    <select onchange="setPart('lunettes', this.value)" class="border rounded px-2 py-1">
-                        <option value="lunettes_1">Lunettes 1</option>
-                        <option value="lunettes_2">Lunettes 2</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('lunettes', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur des lunettes">
-                </div>
-
-                <!-- Choix des accessoires -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Accessoire :</span>
-                    <select onchange="setPart('accessoire', this.value)" class="border rounded px-2 py-1">
-                        <option value="collier">Collier</option>
-                        <option value="potara">Potara</option>
-                    </select>
-                </div>
-
-                <!-- Choix du haut -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-semibold">Haut :</span>
-                    <select onchange="setPart('haut', this.value)" class="border rounded px-2 py-1">
-                        <option value="haut">Haut</option>
-                    </select>
-                    <input type="color" onchange="changePartColor('haut', this.value)"
-                        class="w-full h-8 border rounded cursor-pointer" title="Couleur du haut">
+            </div>
+            <div class="flex justify-center mt-6">
+                <div id="color-picker-container" class="flex items-center gap-2">
+                    <input type="color" id="color-picker" value="#FD1353" title="Couleur de l'élément sélectionné">
+                    <span id="color-value">#FD1353</span>
                 </div>
             </div>
+
         </div>
     </div>
 
     <script>
-        let svgElements = []; // Tableau pour stocker les éléments SVG
+        let svgElements = [];
+        let selectedParts = {};
+        let currentPart = 'visage';
 
-        // Configuration des sélecteurs CSS pour chaque partie
         const colorSelectors = {
             'visage': ['path[data-part="visage"]', 'fill'],
             'lunettes': ['circle[data-part="lunettes_1"], path[data-part="lunettes_2"]', 'fill'],
@@ -184,22 +305,36 @@
         };
 
         async function loadSvgElements() {
-            // Vérifier d'abord si les données sont déjà en sessionStorage
             const cachedData = sessionStorage.getItem('svgElements');
             if (cachedData) {
                 svgElements = JSON.parse(cachedData);
+                initializePartIcons();
                 return;
             }
-
-            // Si pas en cache, récupérer depuis l'API
             const res = await fetch('/api/svg-elements');
             svgElements = await res.json();
-
-            // Stocker en sessionStorage pour la session courante
             sessionStorage.setItem('svgElements', JSON.stringify(svgElements));
+            initializePartIcons();
         }
 
-        // Fonction pour changer la couleur d'une partie
+        function initializePartIcons() {
+            const parts = ['visage', 'yeux', 'nez', 'bouche', 'sourcils', 'cheveux', 'barbe', 'lunettes', 'accessoire',
+                'background', 'haut'
+            ];
+            parts.forEach(part => {
+                const element = svgElements.find(e => e.element_type === part);
+                if (element) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(element.svg_content, 'image/svg+xml');
+                    const svgContent = doc.documentElement;
+                    const g = document.getElementById(`${part}-icon`).querySelector('g');
+                    const defs = svgContent.querySelector('defs');
+                    if (defs) defs.remove();
+                    g.innerHTML = svgContent.innerHTML;
+                }
+            });
+        }
+
         function changePartColor(partName, color) {
             const partElement = document.getElementById(partName);
             if (!partElement || !colorSelectors[partName]) return;
@@ -208,13 +343,11 @@
             const elements = partElement.querySelectorAll(selector);
 
             elements.forEach(element => {
-                // Si c'est le premier élément trouvé ou si l'élément a déjà une couleur définie
                 if (element.getAttribute(attribute) || elements.length === 1) {
                     element.setAttribute(attribute, color);
                 }
             });
 
-            // Si aucun élément spécifique n'est trouvé, applique à tous les path/éléments
             if (elements.length === 0) {
                 const fallbackElements = partElement.querySelectorAll('path, circle, ellipse, rect');
                 if (fallbackElements.length > 0) {
@@ -223,7 +356,118 @@
             }
         }
 
-        // --------------- Téléchargement du SVG
+        async function renderSvgPreviews(part) {
+            const container = document.getElementById('options-preview');
+            container.innerHTML = '';
+            const elements = svgElements.filter(e => e.element_type === part);
+
+            // Bouton "Aucun"
+            // Affiche le bouton "Aucun" sauf pour "visage" et "haut"
+            if (part !== 'visage' && part !== 'haut') {
+                const noneBtn = document.createElement('div');
+                noneBtn.classList.add('flex', 'items-center', 'justify-center', 'border', 'rounded', 'cursor-pointer',
+                    'hover:bg-gray-100', 'svg-option');
+                noneBtn.style.width = '90px';
+                noneBtn.style.height = '90px';
+                noneBtn.innerHTML = '<span style="font-size: 2.5rem; color: #ccc;">✕</span>';
+                noneBtn.title = 'Aucun';
+                noneBtn.setAttribute('data-part', 'none');
+
+                noneBtn.addEventListener('click', () => {
+                    document.getElementById(part).innerHTML = '';
+                    container.querySelectorAll('.border-blue-500').forEach(s => s.classList.remove(
+                        'border-blue-500'));
+                    noneBtn.classList.add('border-blue-500');
+                    selectedParts[part] = 'none';
+                });
+                noneBtn.addEventListener('mouseover', () => {
+                    document.getElementById(part).innerHTML = '';
+                });
+                noneBtn.addEventListener('mouseout', () => {
+                    restoreSelectedPart(part);
+                });
+                container.appendChild(noneBtn);
+            }
+
+            elements.forEach(element => {
+                const parser = new DOMParser();
+                const svgDoc = parser.parseFromString(element.svg_content, 'image/svg+xml');
+                const svg = svgDoc.documentElement;
+
+                svg.setAttribute('width', '90');
+                svg.setAttribute('height', '90');
+                svg.style.minWidth = '90px';
+                svg.style.minHeight = '90px';
+                svg.classList.add('cursor-pointer', 'border', 'rounded', 'p-1', 'hover:bg-gray-100',
+                    'svg-option');
+                svg.setAttribute('data-part', element.element_name);
+
+                svg.addEventListener('click', () => {
+                    setPart(part, element.element_name);
+                    container.querySelectorAll('.border-blue-500').forEach(s => s.classList.remove(
+                        'border-blue-500'));
+                    svg.classList.add('border-blue-500');
+                    selectedParts[part] = element.element_name;
+                });
+
+                svg.addEventListener('mouseover', () => {
+                    setPart(part, element.element_name);
+                });
+
+                svg.addEventListener('mouseout', () => {
+                    restoreSelectedPart(part);
+                });
+
+                container.appendChild(svg);
+            });
+
+            if (selectedParts[part]) {
+                const selectedElement = container.querySelector(`[data-part="${selectedParts[part]}"]`);
+                if (selectedElement) {
+                    selectedElement.classList.add('border-blue-500');
+                }
+            }
+        }
+
+        function restoreSelectedPart(part) {
+            const elementName = selectedParts[part] || '';
+            if (elementName && elementName !== 'none') {
+                setPart(part, elementName);
+            } else {
+                document.getElementById(part).innerHTML = '';
+            }
+        }
+
+        function setPart(part, name) {
+            if (name === 'none') {
+                document.getElementById(part).innerHTML = '';
+                return;
+            }
+            const element = svgElements.find(e => e.element_type === part && e.element_name === name);
+            if (!element) return;
+            const g = document.getElementById(part);
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(element.svg_content, 'image/svg+xml');
+            const svgContent = doc.documentElement;
+            const defs = svgContent.querySelector('defs');
+            if (defs) defs.remove();
+            g.innerHTML = svgContent.innerHTML;
+
+            // Ajuster la taille du background sans affecter l'avatar
+            if (part === 'background') {
+                const backgroundG = document.getElementById('background');
+                if (backgroundG) {
+                    backgroundG.style.transform = 'scale(1)';
+                    backgroundG.style.transformOrigin = 'center';
+                    backgroundG.style.position = 'absolute';
+                    backgroundG.style.top = '0';
+                    backgroundG.style.left = '0';
+                    backgroundG.style.width = '100%';
+                    backgroundG.style.height = '100%';
+                }
+            }
+        }
+
         document.getElementById('download-btn').addEventListener('click', function() {
             const svg = document.getElementById('avatar-canvas');
             const serializer = new XMLSerializer();
@@ -247,83 +491,98 @@
             setTimeout(() => URL.revokeObjectURL(url), 10);
         });
 
-        // --------------- CHARGEMENT DES SVGs
-        function setPart(part, name) {
-            const element = svgElements.find(e => e.element_type === part && e.element_name === name);
-            if (!element) return;
-            const g = document.getElementById(part);
-            // Supprimer les <defs> existants pour éviter les conflits de styles
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(element.svg_content, 'image/svg+xml');
-            const svgContent = doc.documentElement;
-            const defs = svgContent.querySelector('defs');
-            if (defs) defs.remove(); // Retire les styles internes pour éviter les conflits
-            g.innerHTML = svgContent.innerHTML;
+        async function sauvegarder() {
+            const token = localStorage.getItem('api_token');
+            if (!token) {
+                alert('Vous devez être connecté pour sauvegarder.');
+                return;
+            }
+
+            const svg = document.getElementById('avatar-canvas');
+            const serializer = new XMLSerializer();
+            let avatarSvg = serializer.serializeToString(svg);
+            if (!avatarSvg.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+                avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+            if (!avatarSvg.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+                avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+            }
+            const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/avatar_complet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        avatar_svg: avatarSvg,
+                        avatar_name: avatarName,
+                    }),
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(`${response.status} - ${err.message}`);
+                }
+
+                const data = await response.json();
+                alert('Sauvegarde réussie !');
+            } catch (error) {
+                alert('Erreur lors de la sauvegarde : ' + error.message);
+            }
         }
 
-        // Fonctions pour changer les parties de l'avatar
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadSvgElements(); // Attend que les données soient chargées
-            setPart('background', 'background_1');
+            await loadSvgElements();
+
+            // Initialiser les sélecteurs de parties
+            const partSelectors = document.querySelectorAll('.part-selector');
+            partSelectors.forEach(button => {
+                button.addEventListener('click', () => {
+                    partSelectors.forEach(btn => btn.classList.remove('bg-00AFF5',
+                        'text-white'));
+                    button.classList.add('bg-00AFF5', 'text-white');
+                    currentPart = button.getAttribute('data-part');
+                    renderSvgPreviews(currentPart);
+                    document.getElementById('color-picker').style.display = colorSelectors[
+                        currentPart] ? 'inline-block' : 'none';
+                });
+            });
+
+            // Afficher les options du visage par défaut
+            document.querySelector('.part-selector[data-part="visage"]').classList.add('bg-00AFF5',
+                'text-white');
+            renderSvgPreviews('visage');
+
+            // Gestion du color picker
+            const colorPicker = document.getElementById('color-picker');
+            const colorValue = document.getElementById('color-value');
+            colorPicker.addEventListener('input', (e) => {
+                const color = e.target.value;
+                changePartColor(currentPart, color);
+                colorValue.textContent = color;
+            });
+
+            // Définir les éléments par défaut sans background par défaut
+
+            selectedParts['haut'] = 'haut';
+            selectedParts['visage'] = 'visage';
+            selectedParts['nez'] = 'nez_1';
+            selectedParts['bouche'] = 'bouche_1';
+            selectedParts['yeux'] = 'yeux_1';
+            selectedParts['sourcils'] = 'sourcils_1';
             setPart('haut', 'haut');
             setPart('visage', 'visage');
             setPart('nez', 'nez_1');
             setPart('bouche', 'bouche_1');
             setPart('yeux', 'yeux_1');
             setPart('sourcils', 'sourcils_1');
-            setPart('cheveux', 'cheveux_1');
-            setPart('barbe', 'barbe_1');
-            setPart('lunettes', 'lunettes_1');
-            setPart('accessoire', 'collier');
+
         });
-
-
-async function sauvegarder() {
-    const token = localStorage.getItem('api_token');
-    if (!token) {
-        alert('Vous devez être connecté pour sauvegarder.');
-        return;
-    }
-
-    const svg = document.getElementById('avatar-canvas');
-    const serializer = new XMLSerializer();
-    let avatarSvg = serializer.serializeToString(svg);
-    if (!avatarSvg.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
-        avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-    }
-    if (!avatarSvg.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
-        avatarSvg = avatarSvg.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
-    }
-    const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
-
-    try {
-        const response = await fetch('http://localhost:8000/api/avatar_complet', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                avatar_svg: avatarSvg,
-                avatar_name: avatarName,
-            }),
-        });
-
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(`${response.status} - ${err.message}`);
-        }
-
-        const data = await response.json();
-        alert('Sauvegarde réussie !');
-    } catch (error) {
-        alert('Erreur lors de la sauvegarde : ' + error.message);
-    }
-}
-
-
-
-
     </script>
 @endsection
+
+
