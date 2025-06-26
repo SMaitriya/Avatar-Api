@@ -3,7 +3,7 @@
 @section('content')
     <style>
         body,
-        h2,
+        h2
         {
         font-family: 'Poppins', sans-serif;
         }
@@ -156,7 +156,11 @@
             <button onclick="sauvegarder()" id="sauvegarder-avatar"
                 class="bg-[#00AFF5] hover:bg-[#00BFFF] text-white font-semibold py-2 px-6 rounded-full border-2 border-black"
                 style="background-color: #00AFF5; opacity: 1;" aria-label="Sauvegarder l'avatar">
+<<<<<<< HEAD
                 Sauvegarder
+=======
+                Sauvegarder <img src="{{ asset('images/telecharger.svg') }}" alt="Voir" class="w-8 h-8 inline-block ml-2">
+>>>>>>> 91e2762 (improving page bibliotheque.blade)
             </button>
 
             <div class="avatar-container relative" style="width: 250px; height: 280px;">
