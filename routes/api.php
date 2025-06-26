@@ -7,10 +7,17 @@ use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\SvgElementController;
 use App\Http\Controllers\AvatarCompletController;
 use App\Http\Controllers\BibliothequeController;
-
+use App\Http\Middleware\ApiKeyMiddleware;
+use App\Http\Controllers\AvatarApiController;
 
 // ROUTE POUR LA RCUPERATION DES SVG ET MISE EN CACHE
 Route::get('/svg-elements', [SvgElementController::class, 'index']);
+
+// Route API (clé) pour TOUS les avatars
+#Route::middleware([ApiKeyMiddleware::class])->get('/bibliotheque', [BibliothequeController::class, 'allAvatars']);
+
+Route::middleware([ApiKeyMiddleware::class])->get('/public-avatars', [AvatarApiController::class, 'allAvatarsMinimal']);
+
 
 
 Route::get('/user', function (Request $request) {

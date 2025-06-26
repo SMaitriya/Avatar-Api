@@ -24,8 +24,8 @@ class BibliothequeController extends Controller
         $user = Auth::user();
 
         $avatar = AvatarComplet::where('avatar_id', $id)
-                    ->where('user_id', $user->id)
-                    ->first();
+            ->where('user_id', $user->id)
+            ->first();
 
         if (!$avatar) {
             return response()->json(['message' => 'Avatar non trouvé ou accès refusé'], 404);
