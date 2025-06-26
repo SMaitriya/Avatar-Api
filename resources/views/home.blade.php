@@ -156,7 +156,14 @@
             <button onclick="sauvegarder()" id="sauvegarder-avatar"
                 class="bg-[#00AFF5] hover:bg-[#00BFFF] text-white font-semibold py-2 px-6 rounded-full border-2 border-black"
                 style="background-color: #00AFF5; opacity: 1;" aria-label="Sauvegarder l'avatar">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> b5fdf3575523897a767285677694a578fcf915a4
                 Sauvegarder
+=======
+                Sauvegarder <img src="{{ asset('images/telecharger.svg') }}" alt="Voir" class="w-8 h-8 inline-block ml-2">
+>>>>>>> 91e2762 (improving page bibliotheque.blade)
             </button>
 
             <div class="avatar-container relative" style="width: 250px; height: 280px;">
@@ -285,8 +292,27 @@
             </div>
 
         </div>
-    </div>
 
+        <div class="d-flex justify-content-center mt-3 mb-4 gap-2">
+            <input type="color" id="color-picker" value="#4A90E2" style="height:40px;width:40px;border:none;">
+            <span id="color-value">#4A90E2</span>
+            <select id="color-target" class="form-select w-auto">
+                <option value="cheveux">Cheveux</option>
+                <option value="yeux">Yeux</option>
+                <option value="barbe">Barbe</option>
+                <option value="sourcils">Sourcils</option>
+                <option value="haut">T-shirt</option>
+                <option value="background">Fond</option>
+                <option value="visage">Peau</option>
+            </select>
+            <button id="download-btn" class="btn btn-primary ms-3">Télécharger mon avatar SVG</button>
+        </div>
+
+        <div id="choices-area" class="my-4" style="display:grid;gap:28px;"></div>
+    </div>
+@endsection
+
+@section('scripts')
     <script>
         let svgElements = [];
         let selectedParts = {};

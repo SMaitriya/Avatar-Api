@@ -1,5 +1,4 @@
-
-<nav class="bg-white shadow-md p-4">
+<nav class="bg-white shadow-md p-4 mb-8">
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center space-x-4">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> <!-- plus grand -->
@@ -49,7 +48,7 @@
         nav.innerHTML = `
             <a href="/" class="text-gray-600 hover:text-blue-500">Accueil</a>
             <a href="/login" class="text-gray-600 hover:text-blue-500">Connexion</a>
-            <a href="/register" class="text-gray-600 hover:text-blue-500 font-bold underline">Inscription</a>
+            <a href="/register" class="text-gray-600 hover:text-blue-500">Inscription</a>
         `;
     }
 
