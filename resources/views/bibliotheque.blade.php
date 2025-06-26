@@ -11,9 +11,9 @@
 
 
 <div class="fixed bottom-4 left-1/2 transform -translate-x-1/2 space-y-2 sm:space-y-0 sm:space-x-2 sm:flex">
-    <button onclick="handleView()" class="w-32 bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Voir</button>
-    <button onclick="handleDownload()" class="w-32 bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">Télécharger</button>
-    <button onclick="handleDelete()" class="w-32 bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Supprimer</button>
+    <button onclick="handleView()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">Voir</button>
+    <button onclick="handleDownload()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">Télécharger</button>
+    <button onclick="handleDelete()" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black ml-4">Supprimer</button>
 </div>
 
 
