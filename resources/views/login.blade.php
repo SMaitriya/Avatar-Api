@@ -85,7 +85,7 @@
             } else {
                 nav.innerHTML = `
             <a href="/" class="text-gray-600 hover:text-blue-500">Accueil</a>
-            <a href="/login" class="text-gray-600 hover:text-blue-500 font-bold underline">Connexion</a>
+            <a href="/login" class="text-gray-600 hover:text-blue-500">Connexion</a>
             <a href="/register" class="text-gray-600 hover:text-blue-500">Inscription</a>
         `;
             }

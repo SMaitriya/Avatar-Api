@@ -12,7 +12,7 @@ class AvatarCompletController extends Controller
     {
 
         $request->validate([
-            'avatar_svg' => 'required|string', 
+            'avatar_svg' => 'required|string',
             'avatar_name' => 'required|string|max:255',
         ]);
 
