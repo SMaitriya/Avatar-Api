@@ -8,6 +8,7 @@
         </div>
         <div id="no-avatars" class="hidden text-center text-gray-500 mt-6">Aucun avatar trouvé.</div>
     </div>
+</div>
 
     <style>
         .avatar-preview {
@@ -74,6 +75,7 @@
                 window.location.href = '/login';
                 return;
             }
+        });
 
             try {
                 const response = await fetch('http://localhost:8000/api/bibliotheque', {
