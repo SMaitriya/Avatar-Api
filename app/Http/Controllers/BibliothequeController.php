@@ -19,11 +19,11 @@ class BibliothequeController extends Controller
         return response()->json($avatars);
     }
 
-            public function allAvatars()
-        {
-            $avatars = AvatarComplet::all();
-            return response()->json($avatars);
-        }
+        public function allAvatars()
+    {
+        $avatars = AvatarComplet::all();
+        return response()->json($avatars);
+    }
 
     
 
