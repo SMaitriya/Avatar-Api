@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col items-center justify-center min-h-screen bg-yellow-100 p-6">
+    <div class="flex flex-col items-center  min-h-screen bg-yellow-100 p-6">
         <h2 class="text-2xl font-bold mb-6">Crée ton Avatar</h2>
 
         <!-- Section principale avatar -->
-        <div class="flex items-center justify-center mb-8">
+        <div class="flex items-center justify-center mb-8 ">
             <!-- Bouton Sauvegarder (à brancher plus tard) -->
             <button  onclick="sauvegarder()"
                 id="sauvegarder-avatar" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full border-2 border-black mr-4">
