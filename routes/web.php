@@ -4,12 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BibliothequeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+
 
 // Accueil
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Page bibliothèque
-Route::get('/bibliotheque', [BibliothequeController::class, 'index'])->middleware('auth')->name('bibliotheque');
 
 // Page login
 Route::get('/login', function () {
@@ -28,3 +28,9 @@ Route::get('/admin/api-keys', function () {
 
 
 Route::get('/bibliotheque', [BibliothequeController::class, 'index']);
+
+Route::get('/profil', [UserController::class, 'showProfile'])->name('user.profile');
+Route::put('/profil/update-password', [UserController::class, 'updatePassword'])->name('user.updatePassword');
+
+
+    

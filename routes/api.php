@@ -7,10 +7,15 @@ use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\SvgElementController;
 use App\Http\Controllers\AvatarCompletController;
 use App\Http\Controllers\BibliothequeController;
+use App\Http\Controllers\UserController;
+
 
 
 // ROUTE POUR LA RCUPERATION DES SVG ET MISE EN CACHE
 Route::get('/svg-elements', [SvgElementController::class, 'index']);
+
+
+Route::get('/avatars/all', [BibliothequeController::class, 'allAvatars']);
 
 
 Route::get('/user', function (Request $request) {
@@ -39,3 +44,4 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function (
     Route::patch('/admin/api-keys/{id}/toggle', [ApiKeyController::class, 'toggleStatus']);
     Route::delete('/admin/api-keys/{id}', [ApiKeyController::class, 'delete']);
 });
+

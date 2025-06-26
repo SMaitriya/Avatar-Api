@@ -25,7 +25,7 @@
 
 <!-- Modal simple -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-6 max-w-sm">
+    <div class="bg-white rounded-lg p-6 max-w-sm ">
         <div class="text-center">
             <div id="modal-avatar" class=" pt-6 w-64 h-64 mx-auto mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
                 <div class="w-full h-full flex items-center justify-center">

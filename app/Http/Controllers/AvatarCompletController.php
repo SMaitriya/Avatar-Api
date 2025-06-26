@@ -30,9 +30,5 @@ class AvatarCompletController extends Controller
         ], 201);
     }
 
-    public function index() // Récupérer tous les avatars de l'utilisateur connecté sans doute utile pour la bibliothèque
-    {
-        $avatars = AvatarComplet::where('user_id', Auth::id())->get();
-        return response()->json($avatars);
-    }
+  
 }
