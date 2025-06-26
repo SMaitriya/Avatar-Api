@@ -7,6 +7,7 @@ use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\SvgElementController;
 use App\Http\Controllers\AvatarCompletController;
 use App\Http\Controllers\BibliothequeController;
+use App\Http\Controllers\AvatarController;
 
 
 // ROUTE POUR LA RCUPERATION DES SVG ET MISE EN CACHE
@@ -29,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::get('/svg-elements', [SvgElementController::class, 'index']);
 
 // gestion des clés API
 Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function () {
