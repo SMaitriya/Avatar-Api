@@ -156,9 +156,9 @@
             <button onclick="sauvegarder()" id="sauvegarder-avatar"
                 class="bg-[#00AFF5] hover:bg-[#00BFFF] text-white font-semibold py-2 px-6 rounded-full border-2 border-black"
                 style="background-color: #00AFF5; opacity: 1;" aria-label="Sauvegarder l'avatar">
-                Sauvegarder
-            </button>
 
+                Sauvegarder <img src="{{ asset('images/sauvegarder.svg') }}" alt="Voir" class="w-8 h-8 inline-block ml-2">
+            </button>
             <div class="avatar-container relative" style="width: 250px; height: 280px;">
                 <svg id="avatar-canvas" width="300" height="300" viewBox="0 0 190 300"
                     style="display: block; margin: auto;">
@@ -186,7 +186,7 @@
             <button id="download-btn" type="button"
                 class="bg-[#FF9800] hover:bg-[#FFA726] text-white font-semibold py-2 px-6 rounded-full border-2 border-black"
                 style="background-color: #FF9800; opacity: 1;" aria-label="Télécharger l'avatar">
-                Télécharger
+                Télécharger<img src="{{ asset('images/telecharger.svg') }}" alt="Voir" class="w-8 h-8 inline-block ml-2">
             </button>
         </div>
 
@@ -285,8 +285,12 @@
             </div>
 
         </div>
-    </div>
 
+        <div id="choices-area" class="my-4" style="display:grid;gap:28px;"></div>
+    </div>
+@endsection
+
+@section('scripts')
     <script>
         let svgElements = [];
         let selectedParts = {};
@@ -584,5 +588,3 @@
         });
     </script>
 @endsection
-
-

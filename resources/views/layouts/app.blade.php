@@ -12,5 +12,11 @@
     <div class="container mx-auto py-4">
         @yield('content')
     </div>
+    @yield('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbarAuth();
+        });
+    </script>
 </body>
 </html>

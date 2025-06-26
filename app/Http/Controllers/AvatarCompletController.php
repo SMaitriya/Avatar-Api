@@ -12,7 +12,7 @@ class AvatarCompletController extends Controller
     {
 
         $request->validate([
-            'avatar_svg' => 'required|string', 
+            'avatar_svg' => 'required|string',
             'avatar_name' => 'required|string|max:255',
         ]);
 
@@ -30,5 +30,14 @@ class AvatarCompletController extends Controller
         ], 201);
     }
 
+<<<<<<< HEAD
   
 }
+=======
+    public function index() // Récupérer tous les avatars de l'utilisateur connecté sans doute utile pour la bibliothèque
+    {
+        $avatars = AvatarComplet::where('user_id', Auth::id())->get();
+        return response()->json($avatars);
+    }
+}
+>>>>>>> a49a9efb954161565d5bfbb52b8afddc4b92cbdb

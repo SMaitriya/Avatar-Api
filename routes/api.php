@@ -8,11 +8,16 @@ use App\Http\Controllers\SvgElementController;
 use App\Http\Controllers\AvatarCompletController;
 use App\Http\Controllers\BibliothequeController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Middleware\ApiKeyMiddleware;
+use App\Http\Controllers\AvatarApiController;
 
 
 // ROUTE POUR LA RCUPERATION DES SVG ET MISE EN CACHE
 Route::get('/svg-elements', [SvgElementController::class, 'index']);
+
+// Route API (clé) pour TOUS les avatars
+Route::middleware([ApiKeyMiddleware::class])->get('/public-avatars', [AvatarApiController::class, 'allAvatarsMinimal']);
+
 
 
 Route::get('/avatars/all', [BibliothequeController::class, 'allAvatars']);
@@ -36,6 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::get('/svg-elements', [SvgElementController::class, 'index']);
 
 // gestion des clés API
 Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function () {
