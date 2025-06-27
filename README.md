@@ -82,6 +82,7 @@ Prérequis :
 
 #### Cloner le dépôt
 git clone https://github.com/SMaitriya/Avatar-Api.git
+
 cd Avatar-Api
 
 #### Installer les dépendances PHP
