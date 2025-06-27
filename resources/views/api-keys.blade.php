@@ -6,10 +6,10 @@
     <div class="container mx-auto p-4 sm:p-6 max-w-6xl bg-gray-50">
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Gestion des clés API</h1>
 
-        <!-- Message de notification -->
+        <!-- AFFICHAGE DES MESSAGES D'ERREUR OU DE SUCCÈS -->
         <div id="message" class="mb-6 p-4 rounded-lg hidden bg-blue-50 text-blue-800 font-medium"></div>
 
-        <!-- Formulaire de génération -->
+        <!-- FORMULAIRE POUR GÉNÉRER UNE NOUVELLE CLÉ API -->
         <form id="generate-form" class="mb-6 sm:mb-8 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
             <input type="text" id="raison_sociale" placeholder="Raison sociale"
                 class="border border-gray-200 rounded-lg px-4 py-2 w-full sm:max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm font-medium text-gray-700"
@@ -19,16 +19,15 @@
                 style="background-color: #FF9800;">
                 Générer une nouvelle clé
             </button>
-
         </form>
 
-        <!-- Barre de recherche -->
+        <!-- BARRE DE RECHERCHE POUR FILTRER LES CLEFS PAR RAISON SOCIALE -->
         <div class="mb-6">
             <input type="text" id="search-bar" placeholder="Rechercher une raison sociale..."
                 class="border border-gray-200 rounded-lg px-4 py-2 w-full sm:max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm font-medium text-gray-700">
         </div>
 
-        <!-- Liste des clés -->
+        <!-- LISTE DES CLÉS API AVEC ACTIONS -->
         <div id="keys-list" class="bg-white shadow-lg rounded-xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full table-auto">
@@ -46,15 +45,10 @@
         </div>
     </div>
 
-    <!-- Styles personnalisés -->
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
+        /* STYLES POUR LES SWITCHS DE STATUT */
         .switch-peer:checked+.switch-track {
             background-color: #22c55e !important;
-            /* Vert pour Actif */
         }
 
         .switch-peer:checked+.switch-track .switch-dot {
@@ -63,7 +57,6 @@
 
         .switch-peer:not(:checked)+.switch-track {
             background-color: #ef4444 !important;
-            /* Rouge pour Inactif */
         }
 
         .switch-peer:not(:checked)+.switch-track .switch-dot {
@@ -72,8 +65,9 @@
     </style>
 
     <script>
-        let allKeys = []; // Liste complète (pour recherche)
+        let allKeys = [];
 
+        // CHARGE TOUTES LES CLÉS API DEPUIS L'API
         async function loadApiKeys() {
             const token = localStorage.getItem('api_token');
             const res = await fetch('/api/admin/api-keys', {
@@ -92,7 +86,7 @@
             displayFilteredKeys();
         }
 
-        // Affiche la liste (filtrée selon la barre de recherche)
+        // FILTRE ET AFFICHE LES CLÉS EN FONCTION DE LA RECHERCHE
         function displayFilteredKeys() {
             const search = document.getElementById('search-bar').value.toLowerCase();
             const keysTableBody = document.getElementById('keys-table-body');
@@ -104,7 +98,8 @@
             }
             let html = '';
             keys.forEach(k => {
-                const maskedKey = '*'.repeat(k.cle_api.length); // Clé masquée par défaut
+                // MASQUE LA CLÉ PAR DEFAUT, AVEC BOUTON POUR AFFICHER/MASQUER
+                const maskedKey = '*'.repeat(k.cle_api.length);
                 html += `
             <tr class="border-t hover:bg-gray-100">
                 <td class="px-4 sm:px-6 py-4 text-gray-800 flex items-center gap-2">
@@ -128,6 +123,7 @@
                 </td>
                 <td class="px-4 sm:px-6 py-4 text-gray-800 font-medium">${k.raison_sociale ?? '-'}</td>
                 <td class="px-4 sm:px-6 py-4">
+                    <!-- SWITCH POUR ACTIVER/DÉSACTIVER LA CLÉ -->
                     <label class="inline-flex relative items-center cursor-pointer">
                         <input type="checkbox"
                             class="sr-only switch-peer"
@@ -140,6 +136,7 @@
                     <span class="ml-3 text-sm font-semibold ${k.status === 'Actif' ? 'text-green-700' : 'text-red-600'}">${k.status}</span>
                 </td>
                 <td class="px-4 sm:px-6 py-4 flex gap-2 items-center">
+                    <!-- BOUTON POUR SUPPRIMER LA CLÉ -->
                     <button onclick="deleteKey(${k.id_cle_api})" class="text-red-500 hover:text-red-600 p-1 rounded" title="Supprimer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -155,8 +152,7 @@
 
         document.getElementById('search-bar').addEventListener('input', displayFilteredKeys);
 
-        // ------ Actions ------
-
+        // AFFICHE OU MASQUE LA CLÉ API EN CLAIR
         function toggleKeyVisibility(button) {
             const keySpan = button.previousElementSibling;
             const eyeIcon = button.querySelector('.eye-icon');
@@ -182,6 +178,7 @@
             }
         }
 
+        // ACTIVE/DÉSACTIVE UNE CLÉ API
         async function toggleStatus(id) {
             const token = localStorage.getItem('api_token');
             const res = await fetch(`/api/admin/api-keys/${id}/toggle`, {
@@ -206,6 +203,7 @@
             }
         }
 
+        // SUPPRIME UNE CLÉ API APRÈS CONFIRMATION
         async function deleteKey(id) {
             if (!confirm('Voulez-vous vraiment supprimer cette clé ?')) return;
             const token = localStorage.getItem('api_token');
@@ -230,6 +228,7 @@
             }
         }
 
+        // COPIE LA CLÉ API DANS LE PRESSE-PAPIERS
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 const messageDiv = document.getElementById('message');
@@ -246,11 +245,13 @@
             });
         }
 
+        // GERE LE FORMULAIRE DE GÉNÉRATION DE CLÉ
         document.getElementById('generate-form').onsubmit = async (e) => {
             e.preventDefault();
             const raison = document.getElementById('raison_sociale').value.trim();
             if (!raison) return;
 
+            // VÉRIFIE SI LA RAISON SOCIALE EXISTE DÉJÀ
             if (allKeys.some(k => (k.raison_sociale || '').toLowerCase() === raison.toLowerCase())) {
                 showMessage("La raison sociale existe déjà !", 'red');
                 return;
@@ -277,6 +278,7 @@
             }
         }
 
+        // AFFICHE UN MESSAGE TEMPORAIRE EN FONCTION DU CONTEXTE
         function showMessage(msg, color = 'green') {
             const messageDiv = document.getElementById('message');
             messageDiv.innerText = msg;

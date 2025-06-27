@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            SvgElementsSeeder::class,
+            SvgFinalElementsSeeder::class,
         ]);
     }
 }

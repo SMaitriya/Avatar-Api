@@ -6,17 +6,16 @@
     <title>Inscription</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
 
-    <!-- Navbar dynamique JS -->
+    <!-- BARRE DE NAVIGATION AVEC LOGO ET TITRE -->
     <nav class="bg-white shadow-md p-4 mb-8">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> <!-- plus grand -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16">
                 <span class="text-4xl font-semibold tracking-wider" style="font-family: 'Bangers', cursive;">
                     <span style="color:#FF9800;">Avatar</span>
                     <span style="color:#00AFF5;">API</span>
@@ -28,7 +27,7 @@
 
     <div class="flex justify-center items-center min-h-[60vh]">
         <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-              <h1 class="text-2xl font-bold mb-6 text-center" style="color:#00AFF5;">
+            <h1 class="text-2xl font-bold mb-6 text-center" style="color:#00AFF5;">
                 Créer un compte
             </h1>
             <form id="registerForm" class="space-y-5">
@@ -52,7 +51,7 @@
                     <input type="password" id="password_confirmation" required
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none">
                 </div>
-  <button type="submit"
+                <button type="submit"
                     class="text-white w-full py-2 rounded-lg hover:bg-orange-600 transition duration-200 font-semibold"
                     style="background-color: #FF9800;">
                     Inscription
@@ -63,7 +62,7 @@
     </div>
 
     <script>
-        // Navbar dynamique (corrigée : pas de "Bibliothèque" si pas connecté)
+        // MET À JOUR LA NAVBAR EN FONCTION DE L'ÉTAT DE CONNEXION
         async function fetchUserPseudo(token) {
             try {
                 const res = await fetch('/api/user', {
@@ -99,6 +98,7 @@
             }
         }
 
+        // DÉCONNECTE L'UTILISATEUR ET ACTUALISE LA NAVBAR
         function logoutApi() {
             const token = localStorage.getItem('api_token');
             if (token) {
@@ -118,7 +118,7 @@
 
         updateNavbarAuth();
 
-        // Inscription formulaire
+        // GÈRE LA SOUMISSION DU FORMULAIRE D'INSCRIPTION
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const pseudo = document.getElementById('pseudo').value;
@@ -142,7 +142,7 @@
             if (response.ok) {
                 localStorage.setItem('api_token', data.token);
                 updateNavbarAuth();
-                // Redirection après succès
+                // REDIRIGE VERS LA PAGE D'ACCUEIL APRÈS INSCRIPTION
                 window.location.href = "/";
             } else {
                 let err = data.message || (data.errors && Object.values(data.errors).join('<br>')) ||

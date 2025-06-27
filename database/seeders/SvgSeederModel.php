@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+// MODEL DE SEEDER
+
 class SvgSeederModel extends Seeder
 {
     public function run(): void

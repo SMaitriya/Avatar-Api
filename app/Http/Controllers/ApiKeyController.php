@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 
+// CONTROLLER POUR GERER LES CLEFS API
+
 class ApiKeyController extends Controller
 {
     public function index(Request $request)
     {
+        // VERIFIE SI L'UTILISATEUR EST ADMIN AVANT D'AFFICHER LES CLÉS API
         $user = $this->getCurrentUser($request);
         if (!$user || !$user['is_admin']) {
             return $request->expectsJson()
@@ -25,6 +28,7 @@ class ApiKeyController extends Controller
 
     public function generate(Request $request)
     {
+        // SEULEMENT UN ADMIN PEUT GÉNÉRER UNE NOUVELLE CLEF API
         $user = $this->getCurrentUser($request);
         if (!$user || !$user['is_admin']) {
             return $request->expectsJson()
@@ -34,6 +38,7 @@ class ApiKeyController extends Controller
 
         $request->validate(['raison_sociale' => 'required|string|max:50']);
         try {
+            // CRÉATION DE LA CLÉ API AVEC UNE CHAINE ALEATOIRE DE 100 CARACTÈRES
             $apiKey = ApiKey::create([
                 'cle_api' => Str::random(100),
                 'raison_sociale' => $request->raison_sociale,
@@ -51,6 +56,7 @@ class ApiKeyController extends Controller
 
     public function toggleStatus(Request $request, $id)
     {
+        // PERMET DE CHANGER LE STATUT ACTIF/INACTIF D'UNE CLÉ API
         $user = $this->getCurrentUser($request);
         if (!$user || !$user['is_admin']) {
             return response()->json(['message' => 'Accès non autorisé'], 403);
@@ -69,6 +75,7 @@ class ApiKeyController extends Controller
 
     public function delete(Request $request, $id)
     {
+        // SUPPRESSION D'UNE CLÉ API PAR UN ADMIN
         $user = $this->getCurrentUser($request);
         if (!$user || !$user['is_admin']) {
             return response()->json(['message' => 'Accès non autorisé'], 403);
@@ -85,6 +92,7 @@ class ApiKeyController extends Controller
 
     private function getCurrentUser($request)
     {
+        // RÉCUPERE L'UTILISATEUR À PARTIR DU TOKEN D'AUTHENTIFICATION
         $token = $this->getTokenFromRequest($request);
         if (!$token) {
             return null;
@@ -104,6 +112,7 @@ class ApiKeyController extends Controller
 
     private function getTokenFromRequest($request)
     {
+        // EXTRAIT LE TOKEN DEPUIS LE HEADER AUTHORIZATION
         $header = $request->header('Authorization');
         if ($header && preg_match('/Bearer\s+(\S+)/', $header, $matches)) {
             return $matches[1];
@@ -111,8 +120,7 @@ class ApiKeyController extends Controller
         return $request->session()->get('api_token') ?: (request()->expectsJson() ? null : session('api_token'));
     }
 
-    // Ajoute ceci dans ApiKeyController
-
+    // LISTE TOUTES LES CLÉS API POUR UN ADMIN
     public function list(Request $request)
     {
         $user = $this->getCurrentUser($request);

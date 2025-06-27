@@ -6,17 +6,19 @@ use App\Models\AvatarComplet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// CONTROLLER POUR LA GESTION DES AVATARS COMPLETS ASSOCIÉS À L'UTILISATEUR
+
 class AvatarCompletController extends Controller
 {
     public function store(Request $request)
     {
-
+        // VALIDATION DES CHAMPS REQUIS POUR L'AVATAR
         $request->validate([
             'avatar_svg' => 'required|string',
             'avatar_name' => 'required|string|max:255',
         ]);
 
-        // Créer l'avatar
+        // CREATION D'UN NOUVEL AVATAR ASSOCIÉ À L'UTILISATEUR CONNECTÉ
         $avatar = AvatarComplet::create([
             'user_id' => Auth::id(),
             'avatar_svg' => $request->avatar_svg,
@@ -30,8 +32,9 @@ class AvatarCompletController extends Controller
         ], 201);
     }
 
-    public function index() // Récupérer tous les avatars de l'utilisateur connecté sans doute utile pour la bibliothèque
+    public function index()
     {
+        // RETOURNE TOUS LES AVATARS DE L'UTILISATEUR CONNECTÉ
         $avatars = AvatarComplet::where('user_id', Auth::id())->get();
         return response()->json($avatars);
     }

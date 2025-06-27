@@ -6,24 +6,22 @@
     <title>Connexion</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
 
-    <!-- Navbar dynamique JS -->
+    <!-- BARRE DE NAVIGATION AVEC LOGO ET TITRE -->
     <nav class="bg-white shadow-md p-4 mb-8">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> <!-- plus grand -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16">
                 <span class="text-4xl font-semibold tracking-wider" style="font-family: 'Bangers', cursive;">
                     <span style="color:#FF9800;">Avatar</span>
                     <span style="color:#00AFF5;">API</span>
                 </span>
             </div>
-
             <div class="flex space-x-6 items-center" id="nav-auth"></div>
         </div>
     </nav>
@@ -55,7 +53,7 @@
     </div>
 
     <script>
-        // Navbar dynamique
+        // MET À JOUR LA NAVBAR EN FONCTION DE L'ÉTAT DE CONNEXION
         async function fetchUserPseudo(token) {
             try {
                 const res = await fetch('/api/user', {
@@ -91,7 +89,7 @@
             }
         }
 
-
+        // DÉCONNECTE L'UTILISATEUR ET ACTUALISE LA NAVBAR
         function logoutApi() {
             const token = localStorage.getItem('api_token');
             if (token) {
@@ -111,7 +109,7 @@
 
         updateNavbarAuth();
 
-        // Connexion formulaire
+        // GÈRE LA SOUMISSION DU FORMULAIRE DE CONNEXION
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const pseudo = document.getElementById('pseudo').value;
@@ -131,7 +129,7 @@
             if (response.ok) {
                 localStorage.setItem('api_token', data.token);
                 updateNavbarAuth();
-                // Redirection après succès
+                // REDIRIGE VERS LA PAGE D'ACCUEIL APRÈS CONNEXION
                 window.location.href = "/";
             } else {
                 let err = data.message || "Erreur de connexion";

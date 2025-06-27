@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\AvatarComplet;
 use Illuminate\Support\Facades\Auth;
 
+// CONTROLLER POUR LA GESTION DE LA BIBLIOTHEQUE D'AVATARS
+
 class BibliothequeController extends Controller
 {
     public function index()
@@ -15,6 +17,7 @@ class BibliothequeController extends Controller
 
     public function recuperer()
     {
+        // RETOURNE TOUS LES AVATARS DE L'UTILISATEUR CONNECTÉ
         $avatars = AvatarComplet::where('user_id', Auth::id())->get();
         return response()->json($avatars);
     }
@@ -23,6 +26,7 @@ class BibliothequeController extends Controller
     {
         $user = Auth::user();
 
+        // CHERCHE L'AVATAR PAR ID ET VÉRIFIE QU'IL APPARTIENT À L'UTILISATEUR CONNECTÉ
         $avatar = AvatarComplet::where('avatar_id', $id)
             ->where('user_id', $user->id)
             ->first();
@@ -32,9 +36,11 @@ class BibliothequeController extends Controller
         }
 
         try {
+            // SUPPRESSION DE L'AVATAR
             $avatar->delete();
             return response()->json(['message' => 'Avatar supprimé avec succès']);
         } catch (\Exception $e) {
+            // ERREUR LORS DE LA SUPPRESSION
             return response()->json(['message' => 'Erreur lors de la suppression'], 500);
         }
     }
