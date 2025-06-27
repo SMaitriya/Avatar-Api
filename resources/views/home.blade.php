@@ -1,155 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        body,
-        h2
-        {
-        font-family: 'Poppins', sans-serif;
-        }
-
-        .min-h-screen {
-            background-color: #f5e8c7;
-        }
-
-        button {
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            border-radius: 0.5rem;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .cursor-pointer:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
-        }
-
-        .avatar-container {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            /* Réduit de 1.5rem à 1rem */
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #avatar-canvas {
-            background: none;
-            overflow: visible;
-        }
-
-        .option-card {
-            background: #f9fafb;
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .option-card:hover {
-            background: #e5e7eb;
-        }
-
-        input[type="color"] {
-            width: 40px !important;
-            height: 40px !important;
-            border: none;
-            padding: 0;
-            background: none;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
-        }
-
-        .svg-option {
-            width: 120px !important;
-            height: 120px !important;
-            min-width: 120px !important;
-            min-height: 120px !important;
-        }
-
-        .options-wrapper {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex-grow: 1;
-        }
-
-        .options-container .flex-wrap {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 0.5rem;
-            padding-bottom: 0.5rem;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding-left: 0;
-        }
-
-        .options-container .flex-wrap::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .options-container .flex-wrap::-webkit-scrollbar-thumb {
-            background-color: #ccc;
-            border-radius: 3px;
-        }
-
-        .part-selector {
-            background: #e5e7eb;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            width: 120%;
-            height: 120px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .part-selector:hover {
-            background: #d1d5db;
-        }
-
-        .part-selector.active {
-            background: #00AFF5;
-            color: white;
-        }
-
-        .part-label {
-            font-size: 0.75rem;
-            text-align: center;
-            margin-top: 0.35rem;
-            color: #333;
-        }
-
-        #color-picker-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-
-        }
-
-        #color-value {
-            font-size: 1rem;
-            color: #333;
-        }
-    </style>
-
+   
     <div class="flex flex-col items-center justify-center min-h-screen p-4"> <!-- Réduit de p-6 à p-4 -->
         <!-- Section principale avatar -->
         <div class="flex items-center justify-center mb-6 gap-4"> <!-- Réduit mb-8 à mb-6 -->
@@ -296,6 +148,7 @@
         let selectedParts = {};
         let currentPart = 'visage';
 
+        // Définit les sélecteurs CSS et attributs pour changer la couleur de chaque partie
         const colorSelectors = {
             'visage': ['path[data-part="visage"]', 'fill'],
             'lunettes': ['circle[data-part="lunettes_1"], path[data-part="lunettes_2"]', 'fill'],
@@ -308,6 +161,7 @@
             'cheveux': ['path[data-part="cheveux_1"], path[data-part="cheveux_2"]', 'fill']
         };
 
+        // Charge les éléments SVG depuis l'API ou le cache sessionStorage
         async function loadSvgElements() {
             const cachedData = sessionStorage.getItem('svgElements');
             if (cachedData) {
@@ -321,6 +175,7 @@
             initializePartIcons();
         }
 
+        // Initialise les icônes des parties dans la barre de sélection
         function initializePartIcons() {
             const parts = ['visage', 'yeux', 'nez', 'bouche', 'sourcils', 'cheveux', 'barbe', 'lunettes', 'accessoire',
                 'background', 'haut'
@@ -360,6 +215,7 @@
             }
         }
 
+        // Affiche les options SVG pour la partie sélectionnée
         async function renderSvgPreviews(part) {
             const container = document.getElementById('options-preview');
             container.innerHTML = '';
@@ -393,6 +249,7 @@
                 container.appendChild(noneBtn);
             }
 
+            // Ajoute chaque option SVG dans la liste d'options
             elements.forEach(element => {
                 const parser = new DOMParser();
                 const svgDoc = parser.parseFromString(element.svg_content, 'image/svg+xml');
@@ -425,6 +282,7 @@
                 container.appendChild(svg);
             });
 
+            // Met en surbrillance l'option sélectionnée
             if (selectedParts[part]) {
                 const selectedElement = container.querySelector(`[data-part="${selectedParts[part]}"]`);
                 if (selectedElement) {
@@ -433,6 +291,7 @@
             }
         }
 
+        // Restaure la partie sélectionnée après survol
         function restoreSelectedPart(part) {
             const elementName = selectedParts[part] || '';
             if (elementName && elementName !== 'none') {
@@ -442,6 +301,7 @@
             }
         }
 
+        // Place le SVG choisi dans la partie correspondante de l'avatar
         function setPart(part, name) {
             if (name === 'none') {
                 document.getElementById(part).innerHTML = '';
@@ -472,6 +332,7 @@
             }
         }
 
+        // Télécharge l'avatar actuel au format SVG
         document.getElementById('download-btn').addEventListener('click', function() {
             const svg = document.getElementById('avatar-canvas');
             const serializer = new XMLSerializer();
@@ -514,6 +375,7 @@
             const avatarName = document.getElementById('avatar-name').innerText || 'Avatar_default';
 
             try {
+                // Envoie l'avatar au serveur via l'API
                 const response = await fetch('http://localhost:8000/api/avatar_complet', {
                     method: 'POST',
                     headers: {
@@ -539,11 +401,13 @@
             }
         }
 
+        // Initialisation au chargement de la page
         document.addEventListener('DOMContentLoaded', async () => {
             await loadSvgElements();
 
             // Initialiser les sélecteurs de parties
             const partSelectors = document.querySelectorAll('.part-selector');
+            // Initialiser les sélecteurs de parties
             partSelectors.forEach(button => {
                 button.addEventListener('click', () => {
                     partSelectors.forEach(btn => btn.classList.remove('bg-00AFF5',
@@ -587,4 +451,152 @@
 
         });
     </script>
+     <style>
+        body,
+        h2
+        {
+        font-family: 'Poppins', sans-serif;
+        }
+
+        .min-h-screen {
+            background-color: #f5e8c7;
+        }
+
+        button {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            border-radius: 0.5rem;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .cursor-pointer:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
+
+        .avatar-container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #avatar-canvas {
+            background: none;
+            overflow: visible;
+        }
+
+        .option-card {
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .option-card:hover {
+            background: #e5e7eb;
+        }
+
+        input[type="color"] {
+            width: 40px !important;
+            height: 40px !important;
+            border: none;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+        }
+
+        .svg-option {
+            width: 120px !important;
+            height: 120px !important;
+            min-width: 120px !important;
+            min-height: 120px !important;
+        }
+
+        .options-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .options-container .flex-wrap {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding-left: 0;
+        }
+
+        .options-container .flex-wrap::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .options-container .flex-wrap::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+
+        .part-selector {
+            background: #e5e7eb;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 120%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .part-selector:hover {
+            background: #d1d5db;
+        }
+
+        .part-selector.active {
+            background: #00AFF5;
+            color: white;
+        }
+
+        .part-label {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.35rem;
+            color: #333;
+        }
+
+        #color-picker-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+
+        }
+
+        #color-value {
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+
 @endsection

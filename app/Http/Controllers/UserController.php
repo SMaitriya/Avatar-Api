@@ -12,6 +12,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    // Affiche la page de profil de l'utilisateur connecté
     public function showProfile(Request $request)
     {
         $user = Auth::user();
@@ -19,6 +20,7 @@ class UserController extends Controller
         return view('profil', compact('user'));
     }
 
+    // Met à jour le mot de passe de l'utilisateur connecté
     public function updatePassword(Request $request)
     {
         
@@ -35,6 +37,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        // Retourne à la page précédente avec un message de succès
         return redirect()->back()->with('status', 'Mot de passe mis à jour avec succès.');
     }
 

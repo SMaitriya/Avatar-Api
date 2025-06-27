@@ -15,6 +15,8 @@
 </nav>
 
 <script>
+
+    // Recherche une clé API active correspondante en base
     async function fetchUserInfo(token) {
         try {
             const res = await fetch('/api/user', {
@@ -29,6 +31,7 @@
         return null;
     }
 
+    // Met à jour la barre de navigation selon l'état de connexion
     async function updateNavbarAuth() {
         const nav = document.getElementById('nav-auth');
         const token = localStorage.getItem('api_token');
@@ -45,6 +48,7 @@
                 return;
             }
         }
+        // Affiche les liens pour les visiteurs non connectés
         nav.innerHTML = `
             <a href="/" class="text-gray-600 hover:text-blue-500">Accueil</a>
             <a href="/login" class="text-gray-600 hover:text-blue-500">Connexion</a>
@@ -52,6 +56,7 @@
         `;
     }
 
+    // Déconnecte l'utilisateur côté API et met à jour la navbar
     function logoutApi() {
         const token = localStorage.getItem('api_token');
         if (token) {
@@ -69,5 +74,6 @@
         }
     }
 
+    // Initialise la barre de navigation au chargement de la page
     updateNavbarAuth();
 </script>

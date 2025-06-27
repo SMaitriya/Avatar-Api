@@ -11,44 +11,36 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\ApiKeyMiddleware;
 use App\Http\Controllers\AvatarApiController;
 
-
-// ROUTE POUR LA RCUPERATION DES SVG ET MISE EN CACHE
+// ROUTE POUR LA RECUPERATION DES SVG 
 Route::get('/svg-elements', [SvgElementController::class, 'index']);
 
-// Route API (clé) pour TOUS les avatars
+// Route API protégée par clé API pour obtenir tous les avatars (version minimale)
 Route::middleware([ApiKeyMiddleware::class])->get('/public-avatars', [AvatarApiController::class, 'allAvatarsMinimal']);
 
-
-
+// Route publique pour obtenir tous les avatars complets 
 Route::get('/avatars/all', [BibliothequeController::class, 'allAvatars']);
 
-
+// Retourne l'utilisateur connecté 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-// Route pour sauvegarder et récupérer les avatars
-
+// Routes protégées par Sanctum pour gérer les avatars de l'utilisateur connecté
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/avatar_complet', [AvatarCompletController::class, 'store']);
-    Route::get('/bibliotheque', [BibliothequeController::class, 'recuperer']);
-    Route::delete('/avatars/{id}', [BibliothequeController::class, 'delete']);
+    Route::post('/avatar_complet', [AvatarCompletController::class, 'store']); 
+    Route::get('/bibliotheque', [BibliothequeController::class, 'recuperer']); 
+    Route::delete('/avatars/{id}', [BibliothequeController::class, 'delete']); 
 });
 
-
-// Authentification
+// Authentification (inscription, connexion, déconnexion)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::get('/svg-elements', [SvgElementController::class, 'index']);
-
-// gestion des clés API
+// Gestion des clés API (routes réservées aux admins)
 Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function () {
     Route::get('/admin/api-keys', [ApiKeyController::class, 'index']);
     Route::post('/admin/api-keys/generate', [ApiKeyController::class, 'generate']);
     Route::patch('/admin/api-keys/{id}/toggle', [ApiKeyController::class, 'toggleStatus']);
     Route::delete('/admin/api-keys/{id}', [ApiKeyController::class, 'delete']);
 });
-

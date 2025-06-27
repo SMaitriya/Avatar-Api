@@ -6,17 +6,15 @@
     <title>Inscription</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
 
-    <!-- Navbar dynamique JS -->
     <nav class="bg-white shadow-md p-4 mb-8">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> <!-- plus grand -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16"> 
                 <span class="text-4xl font-semibold tracking-wider" style="font-family: 'Bangers', cursive;">
                     <span style="color:#FF9800;">Avatar</span>
                     <span style="color:#00AFF5;">API</span>
@@ -63,7 +61,6 @@
     </div>
 
     <script>
-        // Navbar dynamique (corrigée : pas de "Bibliothèque" si pas connecté)
         async function fetchUserPseudo(token) {
             try {
                 const res = await fetch('/api/user', {

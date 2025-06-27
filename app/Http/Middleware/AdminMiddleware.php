@@ -7,6 +7,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AdminMiddleware
 {
+     // Middleware pour vérifier si l'utilisateur est admin
     public function handle($request, Closure $next)
     {
         $user = $this->getCurrentUser($request);
@@ -15,9 +16,10 @@ class AdminMiddleware
                 ? response()->json(['message' => 'Accès non autorisé'], 403)
                 : redirect('/')->with('error', 'Accès non autorisé');
         }
-        return $next($request);
+        return $next($request); // Laisse passer la requête si admin
     }
 
+    // Récupère l'utilisateur courant à partir du token d'accès
     private function getCurrentUser($request)
     {
         $token = $this->getTokenFromRequest($request);
@@ -26,7 +28,7 @@ class AdminMiddleware
         }
 
         try {
-            $accessToken = PersonalAccessToken::findToken($token);
+            $accessToken = PersonalAccessToken::findToken($token); // Cherche le token dans la base
             if (!$accessToken) {
                 return null;
             }

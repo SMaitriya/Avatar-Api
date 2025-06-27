@@ -14,7 +14,7 @@ class AvatarComplet extends Model
     {
         parent::boot();
         static::creating(function ($avatar) {
-            $avatar->avatar_id = Str::uuid(); // Génère un UUID pour avatar_id
+            $avatar->avatar_id = Str::uuid(); 
         });
     }
 

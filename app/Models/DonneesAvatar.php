@@ -9,7 +9,7 @@ class DonneesAvatar extends Model
 
     protected $primaryKey = 'id_avatar';
 
-    // Spécifie les champs remplissables pour la création/mise à jour en masse
+ 
     protected $fillable = [
         'id_user',
         'name',

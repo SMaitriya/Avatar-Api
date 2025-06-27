@@ -6,14 +6,11 @@
     <title>Connexion</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
 
-    <!-- Navbar dynamique JS -->
     <nav class="bg-white shadow-md p-4 mb-8">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-4">
@@ -55,7 +52,8 @@
     </div>
 
     <script>
-        // Navbar dynamique
+
+        // Récupère le pseudo de l'utilisateur connecté via l'API
         async function fetchUserPseudo(token) {
             try {
                 const res = await fetch('/api/user', {
@@ -65,12 +63,13 @@
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    return data.pseudo || 'Profil';
+                    return data.pseudo || 'Profil';// Retourne le pseudo si trouvé
                 }
             } catch (e) {}
             return 'Profil';
         }
 
+        // Met à jour la barre de navigation selon l'état de connexion
         async function updateNavbarAuth() {
             const nav = document.getElementById('nav-auth');
             const token = localStorage.getItem('api_token');
@@ -92,6 +91,7 @@
         }
 
 
+         // Déconnecte l'utilisateur côté API et met à jour la navbar
         function logoutApi() {
             const token = localStorage.getItem('api_token');
             if (token) {
@@ -102,9 +102,9 @@
                         'Content-Type': 'application/json'
                     }
                 }).then(() => {
-                    localStorage.removeItem('api_token');
+                    localStorage.removeItem('api_token'); 
                     updateNavbarAuth();
-                    window.location.href = '/';
+                    window.location.href = '/'; //Redirige vers l'accueil
                 });
             }
         }
@@ -117,6 +117,7 @@
             const pseudo = document.getElementById('pseudo').value;
             const password = document.getElementById('password').value;
 
+             // Envoie la requête de connexion à l'API
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
@@ -129,9 +130,8 @@
             });
             const data = await response.json();
             if (response.ok) {
-                localStorage.setItem('api_token', data.token);
+                localStorage.setItem('api_token', data.token); // Stocke le token en local
                 updateNavbarAuth();
-                // Redirection après succès
                 window.location.href = "/";
             } else {
                 let err = data.message || "Erreur de connexion";

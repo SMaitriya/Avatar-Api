@@ -66,17 +66,19 @@ class AuthController extends Controller
         return $user ?: response()->json(['message' => 'Unauthenticated'], 401);
     }
 
+    // Méthode protégée pour obtenir l'utilisateur à partir du token
     protected function getAuthenticatedUser(Request $request)
     {
         $token = $this->getTokenFromRequest($request);
         if (!$token) {
             return null;
         }
-
+        // Trouver l'utilisateur associé au token
         $user = \Laravel\Sanctum\PersonalAccessToken::findToken($token)->tokenable;
         return $user ? ['id' => $user->id, 'pseudo' => $user->pseudo, 'is_admin' => (bool)$user->is_admin] : null;
     }
 
+    // Récupère le token depuis l'en-tête Authorization ou la session
     private function getTokenFromRequest($request)
     {
         $header = $request->header('Authorization');

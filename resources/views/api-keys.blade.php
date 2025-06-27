@@ -54,7 +54,7 @@
 
         .switch-peer:checked+.switch-track {
             background-color: #22c55e !important;
-            /* Vert pour Actif */
+         
         }
 
         .switch-peer:checked+.switch-track .switch-dot {
@@ -63,7 +63,7 @@
 
         .switch-peer:not(:checked)+.switch-track {
             background-color: #ef4444 !important;
-            /* Rouge pour Inactif */
+          
         }
 
         .switch-peer:not(:checked)+.switch-track .switch-dot {

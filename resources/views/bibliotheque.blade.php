@@ -67,6 +67,8 @@
     <script>
         let avatars = [];
         let selectedAvatarId = null;
+            
+        // Charge les avatars de l'utilisateur connecté via l'API
 
         async function loadAvatars() {
             const token = localStorage.getItem('api_token');
@@ -77,6 +79,7 @@
             }
 
             try {
+                 // Appel à l'API pour récupérer les avatars
                 const response = await fetch('http://localhost:8000/api/bibliotheque', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -90,6 +93,7 @@
             }
         }
 
+        // Affiche les avatars dans le conteneur HTML
         function displayAvatars() {
             const container = document.getElementById('avatars-container');
 
@@ -98,6 +102,7 @@
                 return;
             }
 
+            // Génère le HTML pour chaque avatar
             container.innerHTML = avatars.map(avatar => `
         <div onclick="selectAvatar('${avatar.avatar_id}', this)"
              class="bg-white rounded-lg shadow-md p-4 text-center cursor-pointer transition ring-offset-2">
@@ -112,6 +117,7 @@
 
         }
 
+        // Sélectionne un avatar et met à jour l'affichage
         function selectAvatar(id, element) {
             selectedAvatarId = id;
 
@@ -190,6 +196,7 @@
             }
         }
 
+        // Charge les avatars au chargement de la page
         document.addEventListener('DOMContentLoaded', loadAvatars);
     </script>
 @endsection

@@ -13,13 +13,16 @@ class BibliothequeController extends Controller
         return view('bibliotheque');
     }
 
+    // Récupère tous les avatars de l'utilisateur connecté 
     public function recuperer()
     {
         $avatars = AvatarComplet::where('user_id', Auth::id())->get();
         return response()->json($avatars);
     }
 
-        public function allAvatars()
+    // Récupère tous les avatars de tous les utilisateurs 
+
+    public function allAvatars()
     {
         $avatars = AvatarComplet::all();
         return response()->json($avatars);
@@ -27,6 +30,7 @@ class BibliothequeController extends Controller
 
     
 
+    // Supprime un avatar appartenant à l'utilisateur connecté
     public function delete($id)
     {
         $user = Auth::user();

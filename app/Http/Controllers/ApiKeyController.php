@@ -9,6 +9,8 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class ApiKeyController extends Controller
 {
+     // Affiche la liste des clés API (admin uniquement)
+
     public function index(Request $request)
     {
         $user = $this->getCurrentUser($request);
@@ -23,6 +25,7 @@ class ApiKeyController extends Controller
             : view('api-keys', compact('apiKeys'));
     }
 
+        // Génère une nouvelle clé API (admin uniquement)
     public function generate(Request $request)
     {
         $user = $this->getCurrentUser($request);
@@ -49,6 +52,7 @@ class ApiKeyController extends Controller
         }
     }
 
+        // Active/désactive une clé API (admin uniquement)
     public function toggleStatus(Request $request, $id)
     {
         $user = $this->getCurrentUser($request);
@@ -101,6 +105,8 @@ class ApiKeyController extends Controller
             return null;
         }
     }
+
+    // Cherche le token dans l'en-tête Authorization ou la session
 
     private function getTokenFromRequest($request)
     {
