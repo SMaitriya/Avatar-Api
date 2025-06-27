@@ -1,65 +1,112 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projet Avatar - README
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description du projet
+Ce projet consiste à développer un site web permettant aux utilisateurs de créer, personnaliser et gérer des avatars uniques au format SVG. Les utilisateurs peuvent personnaliser divers éléments (couleur de peau, yeux, nez, cheveux, etc...) via une interface intuitive, sauvegarder leurs avatars dans une bibliothèque personnelle, et les télécharger. 
+Une API REST est également disponible pour permettre aux développeurs d’intégrer la récuperation des avatars utilisateurs dans leur application. 
 
-## About Laravel
+## Acteurs :
+- Utilisateurs individuels : Créent des avatars pour leurs profils (réseaux sociaux, jeux, etc.).
+- Développeurs : Intègrent la création d’avatars dans leurs plateformes.
+- Administrateurs : Gèrent la plateforme et les clés API.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fonctionnalités principales
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Création et personnalisation d’avatars :
+- Choix des éléments : couleur de peau, type/couleur des yeux, nez, bouche, cheveux, sourcils, barbe, lunettes, accessoires, haut, arrière-plan.
+- Aperçu en temps réel des modifications.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+### Gestion des avatars :
+- Sauvegarde dans une bibliothèque personnelle avec un nom personnalisé.
+- Visualisation, modification ou suppression des avatars.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Téléchargement : Exportation des avatars au format SVG.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Authentification sécurisée :
+- Inscription/connexion avec email et mot de passe (hachage, tokens).
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### API REST :
+- Endpoints pour créer, sauvegarder, récuperer, supprimer et télécharger des avatars.
+- Sécurisée par des tokens d’authentification.
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Administration :
+- Génération et gestion des clés API pour les clients.
 
-## Contributing
+### Technologies utilisées :
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Backend : Laravel 12 (PHP), MySQL 8
+- Frontend : Blade, Tailwind CSS
 
-## Code of Conduct
+### Structure du projet
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Base de données : avatar_complet, cle_apis, svg_elements, users
+- Pages principales :
+    - Connexion/Inscription
+    - Mon compte
+    - Personnalisation d’avatar
+    - Bibliothèque d’avatars
+    - Page d’administration (génération de clés API)
 
-## Security Vulnerabilities
+## Endpoints de l’API
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Méthode | Endpoint | Description | Contrôleur/Action | Middleware |
+|---------|----------|-------------|------------------|------------|
+| GET     | `/svg-elements` | Récupère la liste de tous les éléments SVG disponibles pour composer les avatars et les met en cache. | `SvgElementController@index` | Aucun |
+| GET     | `/public-avatars` | Retourne une liste minimale de tous les avatars publics (accès protégé par clé API). | `AvatarApiController@allAvatarsMinimal` | `ApiKeyMiddleware` |
+| GET     | `/user` | Renvoie les informations de l’utilisateur authentifié (profil). | Callback (Closure) | `auth:sanctum` |
+| POST    | `/avatar_complet` | Crée ou sauvegarde un nouvel avatar complet pour l’utilisateur connecté, selon les paramètres envoyés. | `AvatarCompletController@store` | `auth:sanctum` |
+| GET     | `/bibliotheque` | Récupère tous les avatars sauvegardés de l’utilisateur connecté. | `BibliothequeController@recuperer` | `auth:sanctum` |
+| DELETE  | `/avatars/{id}` | Supprime un avatar précis (par son ID) de la bibliothèque de l’utilisateur connecté. | `BibliothequeController@delete` | `auth:sanctum` |
+| POST    | `/register` | Crée un nouveau compte utilisateur avec email et mot de passe. | `AuthController@register` | Aucun |
+| POST    | `/login` | Authentifie l’utilisateur et retourne un token d’accès (JWT/Sanctum). | `AuthController@login` | Aucun |
+| POST    | `/logout` | Déconnecte l’utilisateur (invalide le token d’accès). | `AuthController@logout` | `auth:sanctum` |
+| GET     | `/admin/api-keys` | Affiche la liste de toutes les clés API (réservé administrateur). | `ApiKeyController@index` | `AdminMiddleware` |
+| POST    | `/admin/api-keys/generate` | Génère une nouvelle clé API (pour usage externe, réservé admin). | `ApiKeyController@generate` | `AdminMiddleware` |
+| PATCH   | `/admin/api-keys/{id}/toggle` | Active ou désactive une clé API précise (par son ID, réservé admin). | `ApiKeyController@toggleStatus` | `AdminMiddleware` |
+| DELETE  | `/admin/api-keys/{id}` | Supprime une clé API précise (par son ID, réservé admin). | `ApiKeyController@delete` | `AdminMiddleware` |
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# Avatar-Api
->>>>>>> 48cd88c42b99d1ea169fa09fd57ebe5e5c919da9
+## Installation et configuration
+
+Prérequis :
+- PHP >= 8.1
+- Composer
+- MySQL >= 8.0
+- Node.js
+
+
+### Étapes d’installation :
+
+#### Cloner le dépôt
+git clone [<URL_DU_DEPOT>](https://github.com/SMaitriya/Avatar-Api.git)
+cd Avatar-Api
+
+#### Installer les dépendances PHP
+composer install
+
+# Installer les dépendances frontend
+npm install
+
+# Configurer l’environnement
+cp .env.example .env
+
+Modifier .env pour configurer la connexion à la base de données et l’URL de l’application.
+
+# Générer la clé d’application
+php artisan key:generate
+
+# Exécuter les migrations
+php artisan migrate
+
+# Alimenter les élements SVGs dans la base de données
+php artisan db:seed --class=SvgFinalElementsSeeder
+
+# Lancer le serveur
+php artisan serve
+
+## Tester la récuperation des Avatars sur un autre site
+
+Lancer le fichier index.html dans le dossier "Test-Site-API"
